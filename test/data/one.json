@@ -1,0 +1,93 @@
+[
+	{
+		"@timestamp": "2014-06-18T20:36:12.928Z",
+		"type": "lr_varnish_request",
+		"host": "TELAPP221P",
+		"remote_host": "172.31.167.250",
+		"auth": "-",
+		"url": "/en/p1060/hotel-reservations/85303_lodore-falls-hotel-spa-borrowdale.aspx",
+		"status": "200",
+		"response_size": 21574,
+		"ttfb": 1299,
+		"handling": "miss",
+		"req_headers": {
+			"From": "googlebot(at)googlebot.com",
+			"Accept_Encoding": "gzip,deflate",
+			"Connection": "close",
+			"X_Cluster_Client_Ip": "66.249.69.105",
+			"If_Modified_Since": "Fri, 13 Jun 2014 21:57:07 GMT",
+			"Host": "www.laterooms.com",
+			"Accept": "*/*",
+			"User_Agent": "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)"
+		},
+		"resp_headers": {
+			"Connection": "close",
+			"Age": "0",
+			"Date": "Wed, 18 Jun 2014 20:36:12 GMT",
+			"Accept_Ranges": "bytes",
+			"Content_Length": "21574",
+			"Vary": "Accept-Encoding, User-Agent",
+			"X_Powered_By": "Courageous Penguins",
+			"X_Recruitment": "Q. Why are Penguins so good on the Internet? A. Because they have webbed feet! - http://careers.stackoverflow.com/uk/company/laterooms-com",
+			"Set_Cookie": "mvt_nsr=True; expires=Fri, 18-Jul-2014 20:36:11 GMT; path=/",
+			"Content_Encoding": "gzip",
+			"Content_Type": "text/html; charset=utf-8",
+			"Cache_Control": "private"
+		},
+		"vcl_log": {},
+		"@type": "lr_varnish_request",
+		"normalised_url": "/hotel-reservations/85303_lodore-falls-hotel-spa-borrowdale.aspx",
+		"pagetype": "hotel-details",
+		"UserAgent": "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)",
+		"ip": "66.249.69.105",
+		"@version": "1",
+		"url_path": "/en/p1060/hotel-reservations/85303_lodore-falls-hotel-spa-borrowdale.aspx",
+		"url_extension": "aspx",
+		"tags": [
+			"content"
+		],
+		"UA_name": "Googlebot",
+		"UA_os": "Other",
+		"UA_os_name": "Other",
+		"UA_device": "Spider",
+		"UA_major": "2",
+		"UA_minor": "1",
+		"UA_is_bot": "true",
+		"requestId": "c7d3db23-fe55-4512-b896-e8f749505f41",
+		"sessionId": "9454ed95-7a18-4bc2-99bb-548aaa50d6a1",
+		"botBuster_flags": "0",
+		"botBuster_score": "0",
+		"botBuster_limited": "false",
+		"botBuster_flag_tokens": "",
+		"botBuster_tracked": "false",
+		"url_language": "en",
+		"url_partner": "1060",
+		"url_page": "/hotel-reservations/85303_lodore-falls-hotel-spa-borrowdale.aspx",
+		"url_page_type": "hotel-details",
+		"hotel_details_page": "hotel-reservations",
+		"hotel_details_id": "85303",
+		"organisation": {
+			"number": "AS15169",
+			"asn": "Google Inc."
+		},
+		"geoip": {
+			"ip": "66.249.69.105",
+			"country_code2": "US",
+			"country_code3": "USA",
+			"country_name": "United States",
+			"continent_code": "NA",
+			"region_name": "CA",
+			"city_name": "Mountain View",
+			"latitude": 37.385999999999996,
+			"longitude": -122.0838,
+			"dma_code": 807,
+			"area_code": 650,
+			"timezone": "America/Los_Angeles",
+			"real_region_name": "California",
+			"location": [
+				-122.0838,
+				37.385999999999996
+			]
+		}
+	}
+]

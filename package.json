@@ -1,0 +1,30 @@
+{
+  "name": "SENTINEL.Composer",
+  "version": "0.0.0",
+  "description": "Link UDP messages together and emit back to logstash",
+  "main": "lib/index.js",
+  "scripts": {
+    "test": "grunt",
+    "start": "node lib/index.js"
+  },
+  "author": "Steve Elliott",
+  "license": "ISC",
+  "devDependencies": {
+    "grunt": "^0.4.4",
+    "grunt-contrib-jshint": "~0.4.3",
+    "mocha": "~1.12.1",
+    "grunt-mocha-cli": "~1.7.0",
+    "load-grunt-tasks": "~0.4.0",
+    "jshint-stylish": "~0.1.5",
+    "expect.js": "~0.3.1",
+    "nock": "^0.31.0",
+    "proxyquire": "^0.6.0",
+    "redis-mock": "^0.3.0"
+  },
+  "dependencies": {
+    "moment": "^2.6.0",
+    "lodash": "^2.4.1",
+    "bluebird": "^2.1.2",
+    "redis": "^0.10.3"
+  }
+}
