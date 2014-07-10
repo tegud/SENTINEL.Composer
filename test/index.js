@@ -157,7 +157,7 @@ describe('SENTINEL.Composer', function() {
 			});
 
 			describe('sets user', function() {
-				it('ip to value of last request', function(done) {
+				it('ip address info to value of last request', function(done) {
 					var testData = loadTestData('one.json');
 
 					sendTest(testData, 5);
@@ -166,7 +166,31 @@ describe('SENTINEL.Composer', function() {
 						var data = msg.toString('utf-8');
 						var parsedData = JSON.parse(data);
 
-						expect(parsedData.user.ip).to.be('66.249.69.105');
+						expect(parsedData.user.ip).to.eql({
+							"address": '66.249.69.105',
+							"organisation": {
+								"number": "AS15169",
+								"asn": "Google Inc."
+							},
+							"geoip": {
+								"country_code2": "US",
+								"country_code3": "USA",
+								"country_name": "United States",
+								"continent_code": "NA",
+								"region_name": "CA",
+								"city_name": "Mountain View",
+								"latitude": 37.385999999999996,
+								"longitude": -122.0838,
+								"dma_code": 807,
+								"area_code": 650,
+								"timezone": "America/Los_Angeles",
+								"real_region_name": "California",
+								"location": [
+									-122.0838,
+									37.385999999999996
+								]
+							}
+						});
 						done();
 					});
 				});
