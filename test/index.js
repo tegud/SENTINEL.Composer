@@ -115,6 +115,20 @@ describe('SENTINEL.Composer', function() {
 					done();
 				});
 			});
+
+			it('sets user agent to value of last request', function(done) {
+				var testData = loadTestData('one.json');
+
+				sendTest(testData, 100);
+
+				udpClient.on("message", function messageReceived(msg, rinfo) {
+					var data = msg.toString('utf-8');
+					var parsedData = JSON.parse(data);
+
+					expect(parsedData.userAgent).to.be('Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)');
+					done();
+				});
+			});
 		});
 	});
 });
