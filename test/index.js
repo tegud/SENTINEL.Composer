@@ -157,6 +157,20 @@ describe('SENTINEL.Composer', function() {
 			});
 
 			describe('sets user', function() {
+				it('ip to value of last request', function(done) {
+					var testData = loadTestData('one.json');
+
+					sendTest(testData, 5);
+
+					udpClient.on("message", function messageReceived(msg) {
+						var data = msg.toString('utf-8');
+						var parsedData = JSON.parse(data);
+
+						expect(parsedData.user.ip).to.be('66.249.69.105');
+						done();
+					});
+				});
+
 				it('userAgent to value of last request', function(done) {
 					var testData = loadTestData('one.json');
 
