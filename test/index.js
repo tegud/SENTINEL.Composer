@@ -111,7 +111,7 @@ describe('SENTINEL.Composer', function() {
 					var data = msg.toString('utf-8');
 					var parsedData = JSON.parse(data);
 
-					expect(parsedData.booked).to.be(false);
+					expect(parsedData.booked).to.be(true);
 					done();
 				});
 			});
