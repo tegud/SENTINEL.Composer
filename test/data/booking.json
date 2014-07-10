@@ -91,7 +91,27 @@
 		}
 	},
 	{
+	    "@timestamp": "2014-07-10T17:16:35.913+01:00",
+	    "type": "domain_events",
+	    "host": "TELWEB107P",
+	    "domainEventType": "booking made",
+	    "searchId": null,
+	    "bookingId": 26836362,
+	    "hotelId": 123432,
+	    "totalAmountGbp": 110,
+	    "commission": 18,
+	    "rooms": 1,
+	    "nights": 2,
+	    "hotelProvider": "LateRooms",
+	    "affiliateId": 1234,
+	    "bookerCountry": "UK",
+	    "channelId": 9,
+	    "commissionValue": 19.8,
+	    "affiliateName": "AsiaRooms",
+	    "isTestBooking": false,
+	    "@version": "1",
 		"sessionId": "9454ed95-7a18-4bc2-99bb-548aaa50d6a1",
-		"type": "domain_events"
-	}
+	    "requestId": "08b609be-ee01-4828-969f-2e569bfd0227",
+	    "req_headers": {}
+	  }
 ]

@@ -65,7 +65,7 @@ describe('SENTINEL.Composer', function() {
 
 				sendTest(cloneData(testData), 100);
 
-				udpClient.on("message", function messageReceived(msg, rinfo) {
+				udpClient.on("message", function messageReceived(msg) {
 					var data = msg.toString('utf-8');
 					var parsedData = JSON.parse(data);
 
@@ -79,7 +79,7 @@ describe('SENTINEL.Composer', function() {
 
 				sendTest(testData, 100);
 
-				udpClient.on("message", function messageReceived(msg, rinfo) {
+				udpClient.on("message", function messageReceived(msg) {
 					var data = msg.toString('utf-8');
 					var parsedData = JSON.parse(data);
 
@@ -93,7 +93,7 @@ describe('SENTINEL.Composer', function() {
 
 				sendTest(testData, 100);
 
-				udpClient.on("message", function messageReceived(msg, rinfo) {
+				udpClient.on("message", function messageReceived(msg) {
 					var data = msg.toString('utf-8');
 					var parsedData = JSON.parse(data);
 
@@ -107,7 +107,7 @@ describe('SENTINEL.Composer', function() {
 
 				sendTest(testData, 100);
 
-				udpClient.on("message", function messageReceived(msg, rinfo) {
+				udpClient.on("message", function messageReceived(msg) {
 					var data = msg.toString('utf-8');
 					var parsedData = JSON.parse(data);
 
@@ -116,17 +116,109 @@ describe('SENTINEL.Composer', function() {
 				});
 			});
 
-			it('sets user agent to value of last request', function(done) {
+			it('sets bookingDetails if session contains conversion event', function(done) {
+				var testData = loadTestData('booking.json');
+
+				sendTest(testData, 100);
+
+				udpClient.on("message", function messageReceived(msg) {
+					var data = msg.toString('utf-8');
+					var parsedData = JSON.parse(data);
+
+					expect(parsedData.bookingDetails).to.eql({
+						rooms: 1,
+						nights: 2,
+						roomNights: 2,
+						hotel: {
+							id: 123432,
+							provider: 'LateRooms',
+
+						},
+						affiliate: {
+							id: 1234,
+							name: 'AsiaRooms'
+						},
+						totalAmountGbp: 110,
+						commission: {
+							percent: 18,
+							value: 19.8
+						},
+						channel: {
+							id: 9
+						}
+					});
+					done();
+				});
+			});
+
+			it('sets user userAgent to value of last request', function(done) {
 				var testData = loadTestData('one.json');
 
 				sendTest(testData, 100);
 
-				udpClient.on("message", function messageReceived(msg, rinfo) {
+				udpClient.on("message", function messageReceived(msg) {
 					var data = msg.toString('utf-8');
 					var parsedData = JSON.parse(data);
 
-					expect(parsedData.userAgent).to.be('Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)');
+					expect(parsedData.user.userAgent).to.eql({
+						full: 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)',
+						name: "Googlebot",
+						os: "Other",
+						osName: "Other",
+						device: "Spider",
+						major: "2",
+						minor: "1"
+					});
 					done();
+				});
+			});
+
+			describe('sets user type', function() {
+				it('to GoodBot when last request was identified as a bot from UserAgent', function(done) {
+					var testData = loadTestData('one.json');
+
+					sendTest(testData, 100);
+
+					udpClient.on("message", function messageReceived(msg) {
+						var data = msg.toString('utf-8');
+						var parsedData = JSON.parse(data);
+
+						expect(parsedData.user.type).to.be('GoodBot');
+						done();
+					});
+				});
+
+				it('to BadBot when last request was not identified as a bot from UserAgent and BotBuster score over 0', function(done) {
+					var testData = loadTestData('one.json');
+
+					testData[0]['UA_is_bot'] = false;
+					testData[0]['botBuster_score'] = "1000";
+
+					sendTest(testData, 100);
+
+					udpClient.on("message", function messageReceived(msg) {
+						var data = msg.toString('utf-8');
+						var parsedData = JSON.parse(data);
+
+						expect(parsedData.user.type).to.be('BadBot');
+						done();
+					});
+				});
+
+				it('to Human when last request was not identified as a bot from UserAgent and BotBuster score of 0', function(done) {
+					var testData = loadTestData('one.json');
+
+					testData[0]['UA_is_bot'] = false;
+
+					sendTest(testData, 100);
+
+					udpClient.on("message", function messageReceived(msg) {
+						var data = msg.toString('utf-8');
+						var parsedData = JSON.parse(data);
+
+						expect(parsedData.user.type).to.be('Human');
+						done();
+					});
 				});
 			});
 		});
