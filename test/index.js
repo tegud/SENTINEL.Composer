@@ -107,32 +107,51 @@ describe('SENTINEL.Composer', function() {
 				});
 			});
 
-			it('sets number of requests', function(done) {
-				var testData = loadTestData('three.json');
+			describe('sets requests', function() {
+				it('total', function(done) {
+					var testData = loadTestData('three.json');
 
-				sendTest(testData, 5);
+					sendTest(testData, 5);
 
-				udpClient.on("message", function messageReceived(msg) {
-					var data = msg.toString('utf-8');
-					var parsedData = JSON.parse(data);
+					udpClient.on("message", function messageReceived(msg) {
+						var data = msg.toString('utf-8');
+						var parsedData = JSON.parse(data);
 
-					expect(parsedData.requests.total).to.be(3);
-					done();
+						expect(parsedData.requests.total).to.be(3);
+						done();
+					});
+				});	
+
+				it('funnelExitedAt to last funnel page type seen', function(done) {
+					var testData = loadTestData('three.json');
+
+					sendTest(testData, 5);
+
+					udpClient.on("message", function messageReceived(msg) {
+						var data = msg.toString('utf-8');
+						var parsedData = JSON.parse(data);
+
+						expect(parsedData.requests.funnelExitedAt).to.be('hotel-details');
+						done();
+					});
 				});
 			});
 
-			it('sets number of errors encountered when session contains errors', function(done) {
-				var testData = loadTestData('errors.json');
+			describe('sets errors', function() {
+				it('total to number of errors encountered in session', function(done) {
+					var testData = loadTestData('errors.json');
 
-				sendTest(testData, 5);
+					sendTest(testData, 5);
 
-				udpClient.on("message", function messageReceived(msg) {
-					var data = msg.toString('utf-8');
-					var parsedData = JSON.parse(data);
+					udpClient.on("message", function messageReceived(msg) {
+						var data = msg.toString('utf-8');
+						var parsedData = JSON.parse(data);
 
-					expect(parsedData.errors).to.be(2);
-					done();
+						expect(parsedData.errors.total).to.be(2);
+						done();
+					});
 				});
+				
 			});
 
 			it('sets booked to false if session does not contain conversion event', function(done) {
