@@ -65,6 +65,34 @@ describe('SENTINEL.Composer', function() {
 		}
 
 		describe('creates new session object', function() {
+			it('with type of "session"', function(done) {
+				var testData = loadTestData('one.json');
+
+				sendTest(cloneData(testData), 5);
+
+				udpClient.on("message", function messageReceived(msg) {
+					var data = msg.toString('utf-8');
+					var parsedData = JSON.parse(data);
+
+					expect(parsedData.type).to.be("session");
+					done();
+				});
+			});
+
+			it('with timestamp of last event', function(done) {
+				var testData = loadTestData('one.json');
+
+				sendTest(cloneData(testData), 5);
+
+				udpClient.on("message", function messageReceived(msg) {
+					var data = msg.toString('utf-8');
+					var parsedData = JSON.parse(data);
+
+					expect(parsedData['@timestamp']).to.be("2014-06-18T20:36:12.928Z");
+					done();
+				});
+			});
+
 			it('with specified sessionId', function(done) {
 				var testData = loadTestData('one.json');
 
