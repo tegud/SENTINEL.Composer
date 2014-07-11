@@ -107,6 +107,20 @@ describe('SENTINEL.Composer', function() {
 				});
 			});
 
+			it('sets number of requests', function(done) {
+				var testData = loadTestData('three.json');
+
+				sendTest(testData, 5);
+
+				udpClient.on("message", function messageReceived(msg) {
+					var data = msg.toString('utf-8');
+					var parsedData = JSON.parse(data);
+
+					expect(parsedData.requests.total).to.be(3);
+					done();
+				});
+			});
+
 			it('sets number of errors encountered when session contains errors', function(done) {
 				var testData = loadTestData('errors.json');
 
