@@ -159,6 +159,7 @@ describe('SENTINEL.Composer', function() {
 					var parsedData = JSON.parse(data);
 
 					expect(parsedData.bookingDetails).to.eql({
+						isTestBooking: false,
 						rooms: 1,
 						nights: 2,
 						roomNights: 2,
@@ -278,9 +279,7 @@ describe('SENTINEL.Composer', function() {
 					});
 
 					it('to Human when last request was not identified as a bot from UserAgent and BotBuster score of 0', function(done) {
-						var testData = loadTestData('one.json');
-
-						testData[0]['UA_is_bot'] = false;
+						var testData = loadTestData('notabot.json');
 
 						sendTest(testData, 5);
 
