@@ -49,7 +49,7 @@ describe('buildRequests', function() {
 		}).funnelExitedAt).to.be('booking');
 	});
 
-	it('when booking has completed error has occurred, it sets the exitedFunelAt to booking', function() {
+	it('when booking has completed, it sets the exitedFunelAt to booking-confirmation', function() {
 		expect(buildRequests({ 
 			events: [
 				{ type: 'lr_varnish_request', url_page_type: 'search' },
