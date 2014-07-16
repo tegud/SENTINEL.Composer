@@ -11,11 +11,11 @@ describe('buildRequests', function() {
 	it('sets eventsTracked', function() {
 		expect(buildBookingJourney({ 
 			events: [
-				{ type: 'lr_varnish_request', url_page: '/beacon/bookingformjourney.mvc', url_querystring_event: 'clickedbook' },
-				{ type: 'lr_varnish_request', url_page: '/beacon/bookingformjourney.mvc', url_querystring_event: 'validation' },
-				{ type: 'lr_varnish_request', url_page: '/beacon/bookingformjourney.mvc', url_querystring_event: 'ipgrequest' },
-				{ type: 'lr_varnish_request', url_page: '/beacon/bookingformjourney.mvc', url_querystring_event: 'ipgresponse' },
-				{ type: 'lr_varnish_request', url_page: '/beacon/bookingformjourney.mvc', url_querystring_event: 'formsubmittedclient' }
+				{ type: 'domain_events', domainEventType: 'booking journey event', event: 'clickedbook' },
+				{ type: 'domain_events', domainEventType: 'booking journey event', event: 'validation' },
+				{ type: 'domain_events', domainEventType: 'booking journey event', event: 'ipgrequest' },
+				{ type: 'domain_events', domainEventType: 'booking journey event', event: 'ipgresponse' },
+				{ type: 'domain_events', domainEventType: 'booking journey event', event: 'formsubmittedclient' }
 			]
 		}).eventsTracked).to.be('clickedbook validation ipgrequest ipgresponse formsubmittedclient');
 	});
@@ -23,10 +23,10 @@ describe('buildRequests', function() {
 	it('sets validation fails', function() {
 		expect(buildBookingJourney({ 
 			events: [
-				{ type: 'lr_varnish_request', url_page: '/beacon/bookingformjourney.mvc', url_querystring_event: 'validation', url_querystring_state: 'false' },
-				{ type: 'lr_varnish_request', url_page: '/beacon/bookingformjourney.mvc', url_querystring_event: 'validation', url_querystring_state: 'false' },
-				{ type: 'lr_varnish_request', url_page: '/beacon/bookingformjourney.mvc', url_querystring_event: 'validation', url_querystring_state: 'false' },
-				{ type: 'lr_varnish_request', url_page: '/beacon/bookingformjourney.mvc', url_querystring_event: 'validation', url_querystring_state: 'true' }
+				{ type: 'domain_events', domainEventType: 'booking journey event', event: 'validation', state: 'false' },
+				{ type: 'domain_events', domainEventType: 'booking journey event', event: 'validation', state: 'false' },
+				{ type: 'domain_events', domainEventType: 'booking journey event', event: 'validation', state: 'false' },
+				{ type: 'domain_events', domainEventType: 'booking journey event', event: 'validation', state: 'true' }
 			]
 		}).validationFailures).to.eql(3);
 	});
@@ -34,11 +34,11 @@ describe('buildRequests', function() {
 	it('sets ipg fails', function() {
 		expect(buildBookingJourney({ 
 			events: [
-				{ type: 'lr_varnish_request', url_page: '/beacon/bookingformjourney.mvc', url_querystring_event: 'ipgresponse', url_querystring_state: 'error' },
-				{ type: 'lr_varnish_request', url_page: '/beacon/bookingformjourney.mvc', url_querystring_event: 'ipgresponse', url_querystring_state: 'error' },
-				{ type: 'lr_varnish_request', url_page: '/beacon/bookingformjourney.mvc', url_querystring_event: 'ipgresponse', url_querystring_state: 'error' },
-				{ type: 'lr_varnish_request', url_page: '/beacon/bookingformjourney.mvc', url_querystring_event: 'ipgresponse', url_querystring_state: 'error' },
-				{ type: 'lr_varnish_request', url_page: '/beacon/bookingformjourney.mvc', url_querystring_event: 'ipgresponse', url_querystring_state: 'success' }
+				{ type: 'domain_events', domainEventType: 'booking journey event', event: 'ipgresponse', state: 'error' },
+				{ type: 'domain_events', domainEventType: 'booking journey event', event: 'ipgresponse', state: 'error' },
+				{ type: 'domain_events', domainEventType: 'booking journey event', event: 'ipgresponse', state: 'error' },
+				{ type: 'domain_events', domainEventType: 'booking journey event', event: 'ipgresponse', state: 'error' },
+				{ type: 'domain_events', domainEventType: 'booking journey event', event: 'ipgresponse', state: 'success' }
 			]
 		}).ipgFailures).to.eql(4);
 	});
@@ -47,7 +47,7 @@ describe('buildRequests', function() {
 		it('to clickedbook when last booking journey event is clickedbook', function() {
 			expect(buildBookingJourney({ 
 				events: [
-					{ type: 'lr_varnish_request', url_page: '/beacon/bookingformjourney.mvc', url_querystring_event: 'clickedbook' }
+					{ type: 'domain_events', domainEventType: 'booking journey event', event: 'clickedbook' }
 				]
 			}).furthestPointReached).to.be('clickedbook');
 		});
@@ -55,8 +55,8 @@ describe('buildRequests', function() {
 		it('to validation when last booking journey event is validation', function() {
 			expect(buildBookingJourney({ 
 				events: [
-					{ type: 'lr_varnish_request', url_page: '/beacon/bookingformjourney.mvc', url_querystring_event: 'clickedbook' },
-					{ type: 'lr_varnish_request', url_page: '/beacon/bookingformjourney.mvc', url_querystring_event: 'validation' }
+					{ type: 'domain_events', domainEventType: 'booking journey event', event: 'clickedbook' },
+					{ type: 'domain_events', domainEventType: 'booking journey event', event: 'validation' }
 				]
 			}).furthestPointReached).to.be('validation');
 		});
@@ -64,9 +64,9 @@ describe('buildRequests', function() {
 		it('to ipgrequest when last booking journey event is ipgrequest', function() {
 			expect(buildBookingJourney({ 
 				events: [
-					{ type: 'lr_varnish_request', url_page: '/beacon/bookingformjourney.mvc', url_querystring_event: 'clickedbook' },
-					{ type: 'lr_varnish_request', url_page: '/beacon/bookingformjourney.mvc', url_querystring_event: 'validation' },
-					{ type: 'lr_varnish_request', url_page: '/beacon/bookingformjourney.mvc', url_querystring_event: 'ipgrequest' }
+					{ type: 'domain_events', domainEventType: 'booking journey event', event: 'clickedbook' },
+					{ type: 'domain_events', domainEventType: 'booking journey event', event: 'validation' },
+					{ type: 'domain_events', domainEventType: 'booking journey event', event: 'ipgrequest' }
 				]
 			}).furthestPointReached).to.be('ipgrequest');
 		});
@@ -74,10 +74,10 @@ describe('buildRequests', function() {
 		it('to ipgresponse when last booking journey event is ipgresponse', function() {
 			expect(buildBookingJourney({ 
 				events: [
-					{ type: 'lr_varnish_request', url_page: '/beacon/bookingformjourney.mvc', url_querystring_event: 'clickedbook' },
-					{ type: 'lr_varnish_request', url_page: '/beacon/bookingformjourney.mvc', url_querystring_event: 'validation' },
-					{ type: 'lr_varnish_request', url_page: '/beacon/bookingformjourney.mvc', url_querystring_event: 'ipgrequest' },
-					{ type: 'lr_varnish_request', url_page: '/beacon/bookingformjourney.mvc', url_querystring_event: 'ipgresponse' }
+					{ type: 'domain_events', domainEventType: 'booking journey event', event: 'clickedbook' },
+					{ type: 'domain_events', domainEventType: 'booking journey event', event: 'validation' },
+					{ type: 'domain_events', domainEventType: 'booking journey event', event: 'ipgrequest' },
+					{ type: 'domain_events', domainEventType: 'booking journey event', event: 'ipgresponse' }
 				]
 			}).furthestPointReached).to.be('ipgresponse');
 		});
@@ -85,11 +85,11 @@ describe('buildRequests', function() {
 		it('to formsubmittedclient when last booking journey event is formsubmittedclient', function() {
 			expect(buildBookingJourney({ 
 				events: [
-					{ type: 'lr_varnish_request', url_page: '/beacon/bookingformjourney.mvc', url_querystring_event: 'clickedbook' },
-					{ type: 'lr_varnish_request', url_page: '/beacon/bookingformjourney.mvc', url_querystring_event: 'validation' },
-					{ type: 'lr_varnish_request', url_page: '/beacon/bookingformjourney.mvc', url_querystring_event: 'ipgrequest' },
-					{ type: 'lr_varnish_request', url_page: '/beacon/bookingformjourney.mvc', url_querystring_event: 'ipgresponse' },
-					{ type: 'lr_varnish_request', url_page: '/beacon/bookingformjourney.mvc', url_querystring_event: 'formsubmittedclient' }
+					{ type: 'domain_events', domainEventType: 'booking journey event', event: 'clickedbook' },
+					{ type: 'domain_events', domainEventType: 'booking journey event', event: 'validation' },
+					{ type: 'domain_events', domainEventType: 'booking journey event', event: 'ipgrequest' },
+					{ type: 'domain_events', domainEventType: 'booking journey event', event: 'ipgresponse' },
+					{ type: 'domain_events', domainEventType: 'booking journey event', event: 'formsubmittedclient' }
 				]
 			}).furthestPointReached).to.be('formsubmittedclient');
 		});
