@@ -22,17 +22,17 @@ describe('buildRequests', function() {
 			}).eventsTracked).to.be('clickedbook validation ipgrequest ipgresponse formsubmittedclient serversideformsubmit');
 		});
 
-		it.skip('with two submits, first failing validation', function() {
+		it('with two submits, first failing validation', function() {
 			expect(buildBookingJourney({ 
 				events: [
-					{ "@timestamp": "2014-07-18T14:16:54.864+01:00", type: 'domain_events', domainEventType: 'booking journey event', order: 0,  event: 'clickedbook' },
-					{ "@timestamp": "2014-07-18T14:16:55.347+01:00", type: 'domain_events', domainEventType: 'booking journey event', order: 1, event: 'validation' },
-					{ "@timestamp": "2014-07-18T14:16:56.833+01:00", type: 'domain_events', domainEventType: 'booking journey event', order: 0,  event: 'clickedbook' },
-					{ "@timestamp": "2014-07-18T14:16:56.989+01:00", type: 'domain_events', domainEventType: 'booking journey event', order: 2, event: 'ipgrequest' },
-					{ "@timestamp": "2014-07-18T14:16:57.317+01:00", type: 'domain_events', domainEventType: 'booking journey event', order: 1, event: 'validation' },
-					{ "@timestamp": "2014-07-18T14:16:57.317+01:00", type: 'domain_events', domainEventType: 'booking journey event', order: 3, event: 'ipgresponse' },
-					{ "@timestamp": "2014-07-18T14:16:57.707+01:00", type: 'domain_events', domainEventType: 'booking journey event', order: 4, event: 'formsubmittedclient' },
-					{ "@timestamp": "2014-07-18T14:16:58.347+01:00", type: 'domain_events', domainEventType: 'booking journey event', event: 'server side form submit' }
+					{ type: 'domain_events', domainEventType: 'booking journey event', order: 0, event: 'clickedbook' },
+					{ type: 'domain_events', domainEventType: 'booking journey event', order: 1, event: 'validation' },
+					{ type: 'domain_events', domainEventType: 'booking journey event', order: 2, event: 'clickedbook' },
+					{ type: 'domain_events', domainEventType: 'booking journey event', order: 4, event: 'ipgrequest' },
+					{ type: 'domain_events', domainEventType: 'booking journey event', order: 3, event: 'validation' },
+					{ type: 'domain_events', domainEventType: 'booking journey event', order: 5, event: 'ipgresponse' },
+					{ type: 'domain_events', domainEventType: 'booking journey event', order: 6, event: 'formsubmittedclient' },
+					{ type: 'domain_events', domainEventType: 'booking journey event', event: 'server side form submit' }
 				]
 			}).eventsTracked).to.be('clickedbook validation clickedbook validation ipgrequest ipgresponse formsubmittedclient serversideformsubmit');
 		});
