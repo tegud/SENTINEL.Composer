@@ -61,6 +61,14 @@ describe('buildRequests', function() {
 		}).ipgFailures).to.eql(4);
 	});
 
+	it('sets enquiry guid', function() {
+		expect(buildBookingJourney({ 
+			events: [
+				{ type: 'domain_events', domainEventType: 'booking journey event', event: 'server side form submit', eg: 'random-guid-goes-here' }
+			]
+		}).enquiryGuid).to.eql('random-guid-goes-here');
+	});
+
 	describe('furthestPointReached set', function() {
 		it('to clickedbook when last booking journey event is clickedbook', function() {
 			expect(buildBookingJourney({ 
