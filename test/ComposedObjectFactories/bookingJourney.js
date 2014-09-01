@@ -17,9 +17,10 @@ describe('buildRequests', function() {
 					{ type: 'domain_events', domainEventType: 'booking journey event', order: 1, event: 'validation' },
 					{ type: 'domain_events', domainEventType: 'booking journey event', order: 3, event: 'ipgresponse' },
 					{ type: 'domain_events', domainEventType: 'booking journey event', order: 4, event: 'formsubmittedclient' },
-					{ type: 'domain_events', domainEventType: 'booking journey event', event: 'server side form submit' }
+					{ type: 'domain_events', domainEventType: 'booking journey event', order: 100, event: 'server side form submit' },
+					{ type: 'domain_events', domainEventType: 'booking journey event', event: 'server side success' }
 				]
-			}).eventsTracked).to.be('clickedbook validation ipgrequest ipgresponse formsubmittedclient serversideformsubmit');
+			}).eventsTracked).to.be('clickedbook validation ipgrequest ipgresponse formsubmittedclient serversideformsubmit serversidesuccess');
 		});
 
 		it('with two submits, first failing validation', function() {
@@ -32,9 +33,10 @@ describe('buildRequests', function() {
 					{ type: 'domain_events', domainEventType: 'booking journey event', order: 3, event: 'validation' },
 					{ type: 'domain_events', domainEventType: 'booking journey event', order: 5, event: 'ipgresponse' },
 					{ type: 'domain_events', domainEventType: 'booking journey event', order: 6, event: 'formsubmittedclient' },
-					{ type: 'domain_events', domainEventType: 'booking journey event', event: 'server side form submit' }
+					{ type: 'domain_events', domainEventType: 'booking journey event', order: 100, event: 'server side form submit' },
+					{ type: 'domain_events', domainEventType: 'booking journey event', event: 'server side success' }
 				]
-			}).eventsTracked).to.be('clickedbook validation clickedbook validation ipgrequest ipgresponse formsubmittedclient serversideformsubmit');
+			}).eventsTracked).to.be('clickedbook validation clickedbook validation ipgrequest ipgresponse formsubmittedclient serversideformsubmit serversidesuccess');
 		});
 	});
 
@@ -120,17 +122,46 @@ describe('buildRequests', function() {
 			}).furthestPointReached).to.be('formsubmittedclient');
 		});
 
-		it('to serversideformsubmit when last booking journey event is server side form submit', function() {
-			expect(buildBookingJourney({ 
+		it('to serversidesuccess when last booking journey event is server side success', function() {
+			expect(buildBookingJourney({
 				events: [
 					{ type: 'domain_events', domainEventType: 'booking journey event', event: 'clickedbook' },
 					{ type: 'domain_events', domainEventType: 'booking journey event', event: 'validation' },
 					{ type: 'domain_events', domainEventType: 'booking journey event', event: 'ipgrequest' },
 					{ type: 'domain_events', domainEventType: 'booking journey event', event: 'ipgresponse' },
 					{ type: 'domain_events', domainEventType: 'booking journey event', event: 'formsubmittedclient' },
-					{ type: 'domain_events', domainEventType: 'booking journey event', event: 'server side form submit' }
+					{ type: 'domain_events', domainEventType: 'booking journey event', event: 'server side form submit' },
+					{ type: 'domain_events', domainEventType: 'booking journey event', event: 'server side success' }
 				]
-			}).furthestPointReached).to.be('serversideformsubmit');
+			}).furthestPointReached).to.be('serversidesuccess');
+		});
+
+		it('to serversideerror when last booking journey event is server side error', function() {
+			expect(buildBookingJourney({
+				events: [
+					{ type: 'domain_events', domainEventType: 'booking journey event', event: 'clickedbook' },
+					{ type: 'domain_events', domainEventType: 'booking journey event', event: 'validation' },
+					{ type: 'domain_events', domainEventType: 'booking journey event', event: 'ipgrequest' },
+					{ type: 'domain_events', domainEventType: 'booking journey event', event: 'ipgresponse' },
+					{ type: 'domain_events', domainEventType: 'booking journey event', event: 'formsubmittedclient' },
+					{ type: 'domain_events', domainEventType: 'booking journey event', event: 'server side form submit' },
+					{ type: 'domain_events', domainEventType: 'booking journey event', event: 'server side error' }
+				]
+			}).furthestPointReached).to.be('serversideerror');
+		});
+
+		it('to serversideexception when last booking journey event is server side exception', function() {
+			expect(buildBookingJourney({
+				events: [
+					{ type: 'domain_events', domainEventType: 'booking journey event', event: 'clickedbook' },
+					{ type: 'domain_events', domainEventType: 'booking journey event', event: 'validation' },
+					{ type: 'domain_events', domainEventType: 'booking journey event', event: 'ipgrequest' },
+					{ type: 'domain_events', domainEventType: 'booking journey event', event: 'ipgresponse' },
+					{ type: 'domain_events', domainEventType: 'booking journey event', event: 'formsubmittedclient' },
+					{ type: 'domain_events', domainEventType: 'booking journey event', event: 'server side form submit' },
+					{ type: 'domain_events', domainEventType: 'booking journey event', event: 'server side exception' }
+				]
+			}).furthestPointReached).to.be('serversideexception');
 		});
 	});
 });
