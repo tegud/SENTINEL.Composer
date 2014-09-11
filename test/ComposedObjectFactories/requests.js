@@ -58,4 +58,36 @@ describe('buildRequests', function() {
 			]
 		}).funnelExitedAt).to.be('booking-confirmation');
 	});
+
+	it('when hotel details page has been visited with provider specified, it adds it to the list of providers session has encountered', function() {
+		expect(buildRequests({ 
+			events: [
+				{ type: 'lr_varnish_request', url_page_type: 'hotel-details', hotel_details_provider: 'LateRooms' },
+				{ type: 'lr_errors', url_page_type: 'booking' },
+				{ type: 'domain_events', domainEventType: 'booking made' }
+			]
+		}).providersEncountered).to.be('LateRooms');
+	});
+
+	it('when multiple hotel details pages have been visited with different provider specifieds, it adds them to the list of providers session has encountered', function() {
+		expect(buildRequests({ 
+			events: [
+				{ type: 'lr_varnish_request', url_page_type: 'hotel-details', hotel_details_provider: 'LateRooms' },
+				{ type: 'lr_varnish_request', url_page_type: 'hotel-details', hotel_details_provider: 'HiltonOta' },
+				{ type: 'lr_errors', url_page_type: 'booking' },
+				{ type: 'domain_events', domainEventType: 'booking made' }
+			]
+		}).providersEncountered).to.be('LateRooms HiltonOta');
+	});
+
+	it('when multiple hotel details pages have been visited with the same provider specified, it does not add duplicates to the list of providers session has encountered', function() {
+		expect(buildRequests({ 
+			events: [
+				{ type: 'lr_varnish_request', url_page_type: 'hotel-details', hotel_details_provider: 'HiltonOta' },
+				{ type: 'lr_varnish_request', url_page_type: 'hotel-details', hotel_details_provider: 'HiltonOta' },
+				{ type: 'lr_errors', url_page_type: 'booking' },
+				{ type: 'domain_events', domainEventType: 'booking made' }
+			]
+		}).providersEncountered).to.be('HiltonOta');
+	});
 });
