@@ -12,15 +12,16 @@ describe('buildRequests', function() {
 		it('with one submit', function() {
 			expect(buildBookingJourney({ 
 				events: [
-					{ type: 'domain_events', domainEventType: 'booking journey event', order: 0,  event: 'clickedbook' },
-					{ type: 'domain_events', domainEventType: 'booking journey event', order: 2, event: 'ipgrequest' },
-					{ type: 'domain_events', domainEventType: 'booking journey event', order: 1, event: 'validation' },
-					{ type: 'domain_events', domainEventType: 'booking journey event', order: 3, event: 'ipgresponse' },
-					{ type: 'domain_events', domainEventType: 'booking journey event', order: 4, event: 'formsubmittedclient' },
+					{ type: 'domain_events', domainEventType: 'booking journey event', event: 'continueclicked' },
+					{ type: 'domain_events', domainEventType: 'booking journey event', order: 1, event: 'clickedbook' },
+					{ type: 'domain_events', domainEventType: 'booking journey event', order: 3, event: 'ipgrequest' },
+					{ type: 'domain_events', domainEventType: 'booking journey event', order: 2, event: 'validation' },
+					{ type: 'domain_events', domainEventType: 'booking journey event', order: 4, event: 'ipgresponse' },
+					{ type: 'domain_events', domainEventType: 'booking journey event', order: 5, event: 'formsubmittedclient' },
 					{ type: 'domain_events', domainEventType: 'booking journey event', order: 100, event: 'server side form submit' },
 					{ type: 'domain_events', domainEventType: 'booking journey event', event: 'server side success' }
 				]
-			}).eventsTracked).to.be('clickedbook validation ipgrequest ipgresponse formsubmittedclient serversideformsubmit serversidesuccess');
+			}).eventsTracked).to.be('continueclicked clickedbook validation ipgrequest ipgresponse formsubmittedclient serversideformsubmit serversidesuccess');
 		});
 
 		it('with two submits, first failing validation', function() {
@@ -153,6 +154,7 @@ describe('buildRequests', function() {
 		it('to serversideexception when last booking journey event is server side exception', function() {
 			expect(buildBookingJourney({
 				events: [
+					{ type: 'domain_events', domainEventType: 'booking journey event', event: 'continueclicked' },
 					{ type: 'domain_events', domainEventType: 'booking journey event', event: 'clickedbook' },
 					{ type: 'domain_events', domainEventType: 'booking journey event', event: 'validation' },
 					{ type: 'domain_events', domainEventType: 'booking journey event', event: 'ipgrequest' },
