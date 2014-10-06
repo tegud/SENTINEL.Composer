@@ -12,6 +12,7 @@ describe('buildRequests', function() {
 		it('with one submit', function() {
 			expect(buildBookingJourney({ 
 				events: [
+					{ type: 'domain_events', domainEventType: 'booking journey event', event: 'server side online action started' },
 					{ type: 'domain_events', domainEventType: 'booking journey event', event: 'continueclicked' },
 					{ type: 'domain_events', domainEventType: 'booking journey event', order: 1, event: 'clickedbook' },
 					{ type: 'domain_events', domainEventType: 'booking journey event', order: 3, event: 'ipgrequest' },
@@ -21,7 +22,7 @@ describe('buildRequests', function() {
 					{ type: 'domain_events', domainEventType: 'booking journey event', order: 100, event: 'server side form submit' },
 					{ type: 'domain_events', domainEventType: 'booking journey event', event: 'server side success' }
 				]
-			}).eventsTracked).to.be('continueclicked clickedbook validation ipgrequest ipgresponse formsubmittedclient serversideformsubmit serversidesuccess');
+			}).eventsTracked).to.be('onlinecontroller continueclicked clickedbook validation ipgrequest ipgresponse formsubmittedclient serversideformsubmit serversidesuccess');
 		});
 
 		it('with two submits, first failing validation', function() {
