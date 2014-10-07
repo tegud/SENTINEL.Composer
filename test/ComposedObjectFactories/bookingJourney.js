@@ -13,16 +13,18 @@ describe('buildRequests', function() {
 			expect(buildBookingJourney({ 
 				events: [
 					{ type: 'domain_events', domainEventType: 'booking journey event', event: 'server side online action started' },
+					{ type: 'domain_events', domainEventType: 'booking journey event', event: 'server side online action finished' },
 					{ type: 'domain_events', domainEventType: 'booking journey event', event: 'continueclicked' },
-					{ type: 'domain_events', domainEventType: 'booking journey event', order: 1, event: 'clickedbook' },
-					{ type: 'domain_events', domainEventType: 'booking journey event', order: 3, event: 'ipgrequest' },
-					{ type: 'domain_events', domainEventType: 'booking journey event', order: 2, event: 'validation' },
-					{ type: 'domain_events', domainEventType: 'booking journey event', order: 4, event: 'ipgresponse' },
-					{ type: 'domain_events', domainEventType: 'booking journey event', order: 5, event: 'formsubmittedclient' },
+					{ type: 'domain_events', domainEventType: 'booking journey event', order: 0, event: 'clickedbook' },
+					{ type: 'domain_events', domainEventType: 'booking journey event', order: 2, event: 'ipgrequest' },
+					{ type: 'domain_events', domainEventType: 'booking journey event', order: 1, event: 'validation' },
+					{ type: 'domain_events', domainEventType: 'booking journey event', event: 'server side IPG retry' },
+					{ type: 'domain_events', domainEventType: 'booking journey event', order: 3, event: 'ipgresponse' },
+					{ type: 'domain_events', domainEventType: 'booking journey event', order: 4, event: 'formsubmittedclient' },
 					{ type: 'domain_events', domainEventType: 'booking journey event', order: 100, event: 'server side form submit' },
 					{ type: 'domain_events', domainEventType: 'booking journey event', event: 'server side success' }
 				]
-			}).eventsTracked).to.be('onlinecontroller continueclicked clickedbook validation ipgrequest ipgresponse formsubmittedclient serversideformsubmit serversidesuccess');
+			}).eventsTracked).to.be('onlinecontroller onlinecontrollerfinished continueclicked clickedbook validation ipgrequest ipgresponse formsubmittedclient ipgretry serversideformsubmit serversidesuccess');
 		});
 
 		it('with two submits, first failing validation', function() {
