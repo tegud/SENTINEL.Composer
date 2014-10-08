@@ -75,6 +75,14 @@ describe('buildRequests', function() {
 		}).enquiryGuid).to.eql('random-guid-goes-here');
 	});
 
+	it('sets ipgRetries', function() {
+		expect(buildBookingJourney({ 
+			events: [
+				{ type: 'domain_events', domainEventType: 'booking journey event', event: 'server side IPG retry' }
+			]
+		}).ipgRetries).to.eql(1);
+	});
+
 	describe('furthestPointReached set', function() {
 		it('to clickedbook when last booking journey event is clickedbook', function() {
 			expect(buildBookingJourney({ 

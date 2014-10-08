@@ -8,6 +8,22 @@ describe('buildRequests', function() {
 		})).to.be(undefined);
 	});
 
+	it('sets inMoonStickBeta to true when non-homepage request has is_moonstick as true', function() {
+		expect(buildRequests({ 
+			events: [
+				{ type: 'lr_varnish_request', url_page_type: 'search', is_moonstick: true }
+			]
+		}).inMoonstickBeta).to.be(true);
+	});
+
+	it('sets inMoonStickBeta to false when only non-homepage request has is_moonstick as true', function() {
+		expect(buildRequests({ 
+			events: [
+				{ type: 'lr_varnish_request', url_page_type: 'home', is_moonstick: true }
+			]
+		}).inMoonstickBeta).to.be(false);
+	});
+
 	it('when there are no funnel requests, it sets the exitedFunnelAt to none', function() {
 		expect(buildRequests({ 
 			events: [
