@@ -17,16 +17,17 @@ describe('buildRequests', function() {
 					{ type: 'domain_events', domainEventType: 'booking journey event', event: 'continueclicked' },
 					{ type: 'domain_events', domainEventType: 'booking journey event', order: 0, event: 'clickedbook' },
 					{ type: 'domain_events', domainEventType: 'booking journey event', order: 3, event: 'ipgrequest' },
+					{ type: 'domain_events', domainEventType: 'booking journey event', order: 4, event: 'waitonipg' },
 					{ type: 'domain_events', domainEventType: 'booking journey event', order: 1, event: 'validation' },
 					{ type: 'domain_events', domainEventType: 'booking journey event', order: 2, event: 'formsubmittedclient' },
 					{ type: 'domain_events', domainEventType: 'booking journey event', event: 'server side IPG retry' },
-					{ type: 'domain_events', domainEventType: 'booking journey event', order: 4, event: 'ipgresponse' },
-					{ type: 'domain_events', domainEventType: 'booking journey event', order: 5, event: 'clientsidecomplete' },
-					{ type: 'domain_events', domainEventType: 'booking journey event', order: 6, event: 'stillactive' },
+					{ type: 'domain_events', domainEventType: 'booking journey event', order: 5, event: 'ipgresponse' },
+					{ type: 'domain_events', domainEventType: 'booking journey event', order: 6, event: 'clientsidecomplete' },
+					{ type: 'domain_events', domainEventType: 'booking journey event', order: 7, event: 'stillactive' },
 					{ type: 'domain_events', domainEventType: 'booking journey event', order: 100, event: 'server side form submit' },
 					{ type: 'domain_events', domainEventType: 'booking journey event', event: 'server side success' }
 				]
-			}).eventsTracked).to.be('onlinecontroller onlinecontrollerfinished continueclicked clickedbook validation formsubmittedclient ipgrequest ipgresponse ipgretry clientsidecomplete stillactive serversideformsubmit serversidesuccess');
+			}).eventsTracked).to.be('onlinecontroller onlinecontrollerfinished continueclicked clickedbook validation formsubmittedclient ipgrequest waitonipg ipgresponse ipgretry clientsidecomplete stillactive serversideformsubmit serversidesuccess');
 		});
 
 		it('with two submits, first failing validation', function() {
