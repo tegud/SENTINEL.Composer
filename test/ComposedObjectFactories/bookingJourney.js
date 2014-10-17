@@ -9,7 +9,7 @@ describe('buildRequests', function() {
 	});
 
 	describe('sets eventTracked in correct order', function() {
-		it('with one submit', function() {
+		it.skip('with one submit', function() {
 			expect(buildBookingJourney({ 
 				events: [
 					{ type: 'domain_events', domainEventType: 'booking journey event', event: 'server side online action started' },
