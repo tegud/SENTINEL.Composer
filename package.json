@@ -22,6 +22,7 @@
     "redis-mock": "^0.3.0"
   },
   "dependencies": {
+    "amqp": "^0.2.0",
     "bluebird": "^2.1.2",
     "lodash": "^2.4.1",
     "moment": "^2.6.0",
