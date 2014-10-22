@@ -86,6 +86,35 @@ describe('buildRequests', function() {
 		}).ipgRetries).to.eql(1);
 	});
 
+	describe('sets ipgHang', function() {
+		describe('userResponse', function() {
+			it('to exit when no other requests seen', function() {
+				expect(buildBookingJourney({ 
+					events: [
+						{ type: 'lr_varnish_request' },
+						{ type: 'domain_events', domainEventType: 'booking journey event', event: 'clickedbook' },
+						{ type: 'domain_events', domainEventType: 'booking journey event', event: 'validation' },
+						{ type: 'domain_events', domainEventType: 'booking journey event', event: 'ipgrequest' },
+						{ type: 'domain_events', domainEventType: 'booking journey event', event: 'waitonipg' }
+					]
+				}).ipgHang.userResponse).to.be('exit');
+			});
+			
+			it('to returnToSite when lr_varnish_request seen after waitonipg', function() {
+				expect(buildBookingJourney({ 
+					events: [
+						{ type: 'lr_varnish_request' },
+						{ type: 'domain_events', domainEventType: 'booking journey event', event: 'clickedbook' },
+						{ type: 'domain_events', domainEventType: 'booking journey event', event: 'validation' },
+						{ type: 'domain_events', domainEventType: 'booking journey event', event: 'ipgrequest' },
+						{ type: 'domain_events', domainEventType: 'booking journey event', event: 'waitonipg' },
+						{ type: 'lr_varnish_request' }
+					]
+				}).ipgHang.userResponse).to.be('returnToSite');
+			});
+		});
+	});
+
 	describe('furthestPointReached set', function() {
 		it('to clickedbook when last booking journey event is clickedbook', function() {
 			expect(buildBookingJourney({ 
