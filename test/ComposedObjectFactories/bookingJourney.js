@@ -113,6 +113,20 @@ describe('buildRequests', function() {
 				}).ipgHang.userResponse).to.be('returnToSite');
 			});
 		});
+
+		describe('timeSpentWaitingBeforeExit', function() {
+			it('to the time in milliseconds between timestamps of last ipgrequest and last waitonipg', function() {
+				expect(buildBookingJourney({ 
+					events: [
+						{ type: 'lr_varnish_request' },
+						{ type: 'domain_events', domainEventType: 'booking journey event', event: 'clickedbook' },
+						{ type: 'domain_events', domainEventType: 'booking journey event', event: 'validation' },
+						{ '@timestamp': '2014-10-23T08:09:11.676Z', type: 'domain_events', domainEventType: 'booking journey event', event: 'ipgrequest' },
+						{ '@timestamp': '2014-10-23T08:09:12.676Z', type: 'domain_events', domainEventType: 'booking journey event', event: 'waitonipg' }
+					]
+				}).ipgHang.timeSpentWaitingBeforeExit).to.be(1000);
+			});
+		});
 	});
 
 	describe('furthestPointReached set', function() {
