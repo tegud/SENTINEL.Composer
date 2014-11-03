@@ -41,9 +41,12 @@ describe('buildRequests', function() {
 					{ type: 'domain_events', domainEventType: 'booking journey event', order: 5, event: 'ipgresponse' },
 					{ type: 'domain_events', domainEventType: 'booking journey event', order: 6, event: 'formsubmittedclient' },
 					{ type: 'domain_events', domainEventType: 'booking journey event', order: 100, event: 'server side form submit' },
+					{ type: 'domain_events', domainEventType: 'booking journey event', order: 101, event: 'submitter gathering validator data started' },
+					{ type: 'domain_events', domainEventType: 'booking journey event', order: 102, event: 'submitter gathering validator data finished' },
+					{ type: 'domain_events', domainEventType: 'booking journey event', order: 103, event: 'submitter validation finished' },
 					{ type: 'domain_events', domainEventType: 'booking journey event', event: 'server side success' }
 				]
-			}).eventsTracked).to.be('clickedbook validation clickedbook validation ipgrequest ipgresponse formsubmittedclient serversideformsubmit serversidesuccess');
+			}).eventsTracked).to.be('clickedbook validation clickedbook validation ipgrequest ipgresponse formsubmittedclient serversideformsubmit submittergatheringvalidatordatastarted submittergatheringvalidatordatafinished submittervalidationfinished serversidesuccess');
 		});
 	});
 
