@@ -9,7 +9,7 @@ describe('buildRequests', function() {
 	});
 
 	describe('sets eventTracked in correct order', function() {
-		it.skip('with one submit', function() {
+		it('with one submit', function() {
 			expect(buildBookingJourney({ 
 				events: [
 					{ type: 'domain_events', domainEventType: 'booking journey event', event: 'server side online action started' },
@@ -27,7 +27,7 @@ describe('buildRequests', function() {
 					{ type: 'domain_events', domainEventType: 'booking journey event', order: 100, event: 'server side form submit' },
 					{ type: 'domain_events', domainEventType: 'booking journey event', event: 'server side success' }
 				]
-			}).eventsTracked).to.be('onlinecontroller onlinecontrollerfinished continueclicked clickedbook validation formsubmittedclient ipgrequest waitonipg ipgresponse ipgretry clientsidecomplete stillactive serversideformsubmit serversidesuccess');
+			}).eventsTracked).to.be('onlinecontroller onlinecontrollerfinished continueclicked clickedbook validation formsubmittedclient ipgrequest waitonipg ipgretry ipgresponse clientsidecomplete stillactive serversideformsubmit serversidesuccess');
 		});
 
 		it('with two submits, first failing validation', function() {
@@ -128,6 +128,34 @@ describe('buildRequests', function() {
 						{ '@timestamp': '2014-10-23T08:09:12.676Z', type: 'domain_events', domainEventType: 'booking journey event', event: 'waitonipg' }
 					]
 				}).ipgHang.timeSpentWaitingBeforeExit).to.be(1000);
+			});
+		});
+
+		describe('lastJavaScriptError', function() {
+			it('to the details of the last waitonipg', function() {
+				expect(buildBookingJourney({ 
+					events: [
+						{ type: 'lr_varnish_request' },
+						{ type: 'domain_events', domainEventType: 'booking journey event', event: 'clickedbook' },
+						{ type: 'domain_events', domainEventType: 'booking journey event', event: 'validation' },
+						{ '@timestamp': '2014-10-23T08:09:11.676Z', type: 'domain_events', domainEventType: 'booking journey event', event: 'ipgrequest' },
+						{ 
+							'@timestamp': '2014-10-23T08:09:12.676Z', 
+							type: 'domain_events', 
+							domainEventType: 'booking journey event', 
+							event: 'waitonipg',
+							'errorLinenumber': 1,
+							'errorMessage': 'An error occurred',
+							'errorTimestamp': '2014-10-23T08:09:11.676Z',
+							'errorUrl': 'http://www.google.com'
+						}
+					]
+				}).ipgHang.lastJavaScriptError).to.eql({
+					message: 'An error occurred',
+					timestamp: '2014-10-23T08:09:11.676Z',
+					url: 'http://www.google.com',
+					lineNumber: 1
+				});
 			});
 		});
 	});
