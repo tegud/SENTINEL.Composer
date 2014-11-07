@@ -44,9 +44,13 @@ describe('buildRequests', function() {
 					{ type: 'domain_events', domainEventType: 'booking journey event', order: 101, event: 'submitter gathering validator data started' },
 					{ type: 'domain_events', domainEventType: 'booking journey event', order: 102, event: 'submitter gathering validator data finished' },
 					{ type: 'domain_events', domainEventType: 'booking journey event', order: 103, event: 'submitter validation finished' },
+					{ type: 'domain_events', domainEventType: 'booking journey event', order: 111, event: 'submitter started booking via services' },
+					{ type: 'domain_events', domainEventType: 'booking journey event', order: 112, event: 'submitter finished booking via services' },
+					{ type: 'domain_events', domainEventType: 'booking journey event', order: 113, event: 'submitter started sending emails' },
+					{ type: 'domain_events', domainEventType: 'booking journey event', order: 114, event: 'submitter finished sending emails' },
 					{ type: 'domain_events', domainEventType: 'booking journey event', event: 'server side success' }
 				]
-			}).eventsTracked).to.be('clickedbook validation clickedbook validation ipgrequest ipgresponse formsubmittedclient serversideformsubmit submittergatheringvalidatordatastarted submittergatheringvalidatordatafinished submittervalidationfinished serversidesuccess');
+			}).eventsTracked).to.be('clickedbook validation clickedbook validation ipgrequest ipgresponse formsubmittedclient serversideformsubmit submittergatheringvalidatordatastarted submittergatheringvalidatordatafinished submittervalidationfinished submitterstartedbookingviaservices submitterfinishedbookingviaservices submitterstartedsendingemails submitterfinishedsendingemails serversidesuccess');
 		});
 	});
 
