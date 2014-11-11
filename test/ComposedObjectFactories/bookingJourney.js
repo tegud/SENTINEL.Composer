@@ -30,12 +30,16 @@ describe('buildRequests', function() {
 					{ type: 'domain_events', domainEventType: 'booking journey event', order: 103, event: 'submitter gathering validator data finished' },
 					{ type: 'domain_events', domainEventType: 'booking journey event', order: 104, event: 'submitter validation finished' },
 					{ type: 'domain_events', domainEventType: 'booking journey event', order: 112, event: 'submitter started booking via services' },
-					{ type: 'domain_events', domainEventType: 'booking journey event', order: 117, event: 'submitter finished booking via services' },
-					{ type: 'domain_events', domainEventType: 'booking journey event', order: 118, event: 'submitter started sending emails' },
-					{ type: 'domain_events', domainEventType: 'booking journey event', order: 119, event: 'submitter finished sending emails' },
-					{ type: 'domain_events', domainEventType: 'booking journey event', order: 202, event: 'server side success' }
+					{ type: 'domain_events', domainEventType: 'booking journey event', order: 113, event: 'booking request requestDispatcher cleared' },
+					{ type: 'domain_events', domainEventType: 'booking journey event', order: 114, event: 'booking request room occupancy request updated' },
+					{ type: 'domain_events', domainEventType: 'booking journey event', order: 115, event: 'booking request get token response started' },
+					{ type: 'domain_events', domainEventType: 'booking journey event', order: 117, event: 'booking request get token response finished' },
+					{ type: 'domain_events', domainEventType: 'booking journey event', order: 118, event: 'submitter finished booking via services' },
+					{ type: 'domain_events', domainEventType: 'booking journey event', order: 119, event: 'submitter started sending emails' },
+					{ type: 'domain_events', domainEventType: 'booking journey event', order: 120, event: 'submitter finished sending emails' },
+					{ type: 'domain_events', domainEventType: 'booking journey event', event: 'server side success' }
 				]
-			}).eventsTracked).to.be('onlinecontroller onlinecontrollerfinished continueclicked clickedbook validation formsubmittedclient ipgrequest waitonipg ipgretry ipgresponse clientsidecomplete stillactive serversideformsubmit submittergatheringvalidatordatastarted submittergatheringvalidatordataretrievedenquiryresponses submittergatheringvalidatordatafinished submittervalidationfinished submitterstartedbookingviaservices submitterfinishedbookingviaservices submitterstartedsendingemails submitterfinishedsendingemails serversidesuccess');
+			}).eventsTracked).to.be('onlinecontroller onlinecontrollerfinished continueclicked clickedbook validation formsubmittedclient ipgrequest waitonipg ipgretry ipgresponse clientsidecomplete stillactive serversideformsubmit submittergatheringvalidatordatastarted submittergatheringvalidatordataretrievedenquiryresponses submittergatheringvalidatordatafinished submittervalidationfinished submitterstartedbookingviaservices bookingrequestrequestDispatchercleared bookingrequestroomoccupancyrequestupdated bookingrequestgettokenresponsestarted bookingrequestgettokenresponsefinished submitterfinishedbookingviaservices submitterstartedsendingemails submitterfinishedsendingemails serversidesuccess');
 		});
 
 		it('with two submits, first failing validation', function() {
@@ -49,7 +53,7 @@ describe('buildRequests', function() {
 					{ type: 'domain_events', domainEventType: 'booking journey event', order: 5, event: 'ipgresponse' },
 					{ type: 'domain_events', domainEventType: 'booking journey event', order: 6, event: 'formsubmittedclient' },
 					{ type: 'domain_events', domainEventType: 'booking journey event', order: 100, event: 'server side form submit' },
-					{ type: 'domain_events', domainEventType: 'booking journey event', order: 202, event: 'server side success' }
+					{ type: 'domain_events', domainEventType: 'booking journey event', event: 'server side success' }
 				]
 			}).eventsTracked).to.be('clickedbook validation clickedbook validation ipgrequest ipgresponse formsubmittedclient serversideformsubmit serversidesuccess');
 		});
