@@ -32,55 +32,112 @@ describe('buildRequests', function() {
 		}).inMoonstickBeta).to.be(true);
 	});
 
-	it('when there are no funnel requests, it sets the exitedFunnelAt to none', function() {
-		expect(buildRequests({ 
-			events: [
-				{ type: 'lr_varnish_request', url_page_type: 'anotherpage.mvc' }
-			]
-		}).funnelExitedAt).to.be('unknown');
+	describe('sets enteredFunnelAt', function() {
+		it('when there are no funnel requests, it sets the enteredFunnelAt to none', function() {
+			expect(buildRequests({ 
+				events: [
+					{ type: 'lr_varnish_request', url_page_type: 'anotherpage.mvc' }
+				]
+			}).funnelEnteredAt).to.be('unknown');
+		});
+
+		it('when first request is home, it sets the enteredFunnelAt to home', function() {
+			expect(buildRequests({ 
+				events: [
+					{ type: 'lr_varnish_request', url_page_type: 'home' },
+					{ type: 'lr_varnish_request', url_page_type: 'search' }
+				]
+			}).funnelEnteredAt).to.be('home');
+		});
+
+		it('when first request is hotel-details, it sets the enteredFunnelAt to hotel-details', function() {
+			expect(buildRequests({ 
+				events: [
+					{ type: 'lr_varnish_request', url_page_type: 'hotel-details' },
+					{ type: 'lr_varnish_request', url_page_type: 'search' }
+				]
+			}).funnelEnteredAt).to.be('hotel-details');
+		});
+
+		it('when first request is search, it sets the enteredFunnelAt to search', function() {
+			expect(buildRequests({ 
+				events: [
+					{ type: 'lr_varnish_request', url_page_type: 'search' },
+					{ type: 'lr_varnish_request', url_page_type: 'hotel-details' }
+				]
+			}).funnelEnteredAt).to.be('search');
+		});
+
+		it('when booking journey event has occurred, it sets the funnelEnteredAt to booking', function() {
+			expect(buildRequests({ 
+				events: [
+					{ type: 'domain_events', domainEventType: 'booking journey event' },
+					{ type: 'lr_varnish_request', url_page_type: 'search' },
+				]
+			}).funnelEnteredAt).to.be('booking');
+		});
 	});
 
-	it('when last request is home, it sets the exitedFunnelAt to home', function() {
-		expect(buildRequests({ 
-			events: [
-				{ type: 'lr_varnish_request', url_page_type: 'home' }
-			]
-		}).funnelExitedAt).to.be('home');
-	});
+	describe('sets exitedFunnelAt', function() {
+		it('when there are no funnel requests, it sets the exitedFunnelAt to none', function() {
+			expect(buildRequests({ 
+				events: [
+					{ type: 'lr_varnish_request', url_page_type: 'anotherpage.mvc' }
+				]
+			}).funnelExitedAt).to.be('unknown');
+		});
 
-	it('when last request is hotel-details, it sets the exitedFunnelAt to hotel-details', function() {
-		expect(buildRequests({ 
-			events: [
-				{ type: 'lr_varnish_request', url_page_type: 'hotel-details' }
-			]
-		}).funnelExitedAt).to.be('hotel-details');
-	});
+		it('when last request is home, it sets the exitedFunnelAt to home', function() {
+			expect(buildRequests({ 
+				events: [
+					{ type: 'lr_varnish_request', url_page_type: 'home' }
+				]
+			}).funnelExitedAt).to.be('home');
+		});
 
-	it('when last request is search, it sets the exitedFunnelAt to search', function() {
-		expect(buildRequests({ 
-			events: [
-				{ type: 'lr_varnish_request', url_page_type: 'search' }
-			]
-		}).funnelExitedAt).to.be('search');
-	});
+		it('when last request is hotel-details, it sets the exitedFunnelAt to hotel-details', function() {
+			expect(buildRequests({ 
+				events: [
+					{ type: 'lr_varnish_request', url_page_type: 'hotel-details' }
+				]
+			}).funnelExitedAt).to.be('hotel-details');
+		});
 
-	it('when booking error has occurred, it sets the exitedFunelAt to booking', function() {
-		expect(buildRequests({ 
-			events: [
-				{ type: 'lr_varnish_request', url_page_type: 'search' },
-				{ type: 'lr_errors', url_page_type: 'booking' }
-			]
-		}).funnelExitedAt).to.be('booking');
-	});
+		it('when last request is search, it sets the exitedFunnelAt to search', function() {
+			expect(buildRequests({ 
+				events: [
+					{ type: 'lr_varnish_request', url_page_type: 'search' }
+				]
+			}).funnelExitedAt).to.be('search');
+		});
 
-	it('when booking has completed, it sets the exitedFunelAt to booking-confirmation', function() {
-		expect(buildRequests({ 
-			events: [
-				{ type: 'lr_varnish_request', url_page_type: 'search' },
-				{ type: 'lr_errors', url_page_type: 'booking' },
-				{ type: 'domain_events', domainEventType: 'booking made' }
-			]
-		}).funnelExitedAt).to.be('booking-confirmation');
+		it('when booking error has occurred, it sets the exitedFunelAt to booking', function() {
+			expect(buildRequests({ 
+				events: [
+					{ type: 'lr_varnish_request', url_page_type: 'search' },
+					{ type: 'lr_errors', url_page_type: 'booking' }
+				]
+			}).funnelExitedAt).to.be('booking');
+		});
+
+		it('when booking journey event has occurred, it sets the exitedFunelAt to booking', function() {
+			expect(buildRequests({ 
+				events: [
+					{ type: 'lr_varnish_request', url_page_type: 'search' },
+					{ type: 'domain_events', domainEventType: 'booking journey event' }
+				]
+			}).funnelExitedAt).to.be('booking');
+		});
+
+		it('when booking has completed, it sets the exitedFunelAt to booking-confirmation', function() {
+			expect(buildRequests({ 
+				events: [
+					{ type: 'lr_varnish_request', url_page_type: 'search' },
+					{ type: 'lr_errors', url_page_type: 'booking' },
+					{ type: 'domain_events', domainEventType: 'booking made' }
+				]
+			}).funnelExitedAt).to.be('booking-confirmation');
+		});
 	});
 
 	it('when hotel details page has been visited with provider specified, it adds it to the list of providers session has encountered', function() {
