@@ -10,7 +10,7 @@ describe('buildRequests', function() {
 
 	describe('sets eventTracked in correct order', function() {
 		it('with one submit', function() {
-			expect(buildBookingJourney({ 
+			expect(buildBookingJourney({
 				events: [
 					{ type: 'domain_events', domainEventType: 'booking journey event', event: 'server side online action started' },
 					{ type: 'domain_events', domainEventType: 'booking journey event', event: 'server side online action finished' },
@@ -25,13 +25,25 @@ describe('buildRequests', function() {
 					{ type: 'domain_events', domainEventType: 'booking journey event', order: 6, event: 'clientsidecomplete' },
 					{ type: 'domain_events', domainEventType: 'booking journey event', order: 7, event: 'stillactive' },
 					{ type: 'domain_events', domainEventType: 'booking journey event', order: 100, event: 'server side form submit' },
+					{ type: 'domain_events', domainEventType: 'booking journey event', order: 101, event: 'submitter gathering validator data started' },
+					{ type: 'domain_events', domainEventType: 'booking journey event', order: 102, event: 'submitter gathering validator data retrieved enquiry responses' },
+					{ type: 'domain_events', domainEventType: 'booking journey event', order: 103, event: 'submitter gathering validator data finished' },
+					{ type: 'domain_events', domainEventType: 'booking journey event', order: 104, event: 'submitter validation finished' },
+					{ type: 'domain_events', domainEventType: 'booking journey event', order: 112, event: 'submitter started booking via services' },
+					{ type: 'domain_events', domainEventType: 'booking journey event', order: 113, event: 'booking request requestDispatcher cleared' },
+					{ type: 'domain_events', domainEventType: 'booking journey event', order: 114, event: 'booking request room occupancy request updated' },
+					{ type: 'domain_events', domainEventType: 'booking journey event', order: 115, event: 'booking request get token response started' },
+					{ type: 'domain_events', domainEventType: 'booking journey event', order: 117, event: 'booking request get token response finished' },
+					{ type: 'domain_events', domainEventType: 'booking journey event', order: 118, event: 'submitter finished booking via services' },
+					{ type: 'domain_events', domainEventType: 'booking journey event', order: 119, event: 'submitter started sending emails' },
+					{ type: 'domain_events', domainEventType: 'booking journey event', order: 120, event: 'submitter finished sending emails' },
 					{ type: 'domain_events', domainEventType: 'booking journey event', event: 'server side success' }
 				]
-			}).eventsTracked).to.be('onlinecontroller onlinecontrollerfinished continueclicked clickedbook validation formsubmittedclient ipgrequest waitonipg ipgretry ipgresponse clientsidecomplete stillactive serversideformsubmit serversidesuccess');
+			}).eventsTracked).to.be('onlinecontroller onlinecontrollerfinished continueclicked clickedbook validation formsubmittedclient ipgrequest waitonipg ipgretry ipgresponse clientsidecomplete stillactive serversideformsubmit submittergatheringvalidatordatastarted submittergatheringvalidatordataretrievedenquiryresponses submittergatheringvalidatordatafinished submittervalidationfinished submitterstartedbookingviaservices bookingrequestrequestDispatchercleared bookingrequestroomoccupancyrequestupdated bookingrequestgettokenresponsestarted bookingrequestgettokenresponsefinished submitterfinishedbookingviaservices submitterstartedsendingemails submitterfinishedsendingemails serversidesuccess');
 		});
 
 		it('with two submits, first failing validation', function() {
-			expect(buildBookingJourney({ 
+			expect(buildBookingJourney({
 				events: [
 					{ type: 'domain_events', domainEventType: 'booking journey event', order: 0, event: 'clickedbook' },
 					{ type: 'domain_events', domainEventType: 'booking journey event', order: 1, event: 'validation' },
@@ -41,21 +53,14 @@ describe('buildRequests', function() {
 					{ type: 'domain_events', domainEventType: 'booking journey event', order: 5, event: 'ipgresponse' },
 					{ type: 'domain_events', domainEventType: 'booking journey event', order: 6, event: 'formsubmittedclient' },
 					{ type: 'domain_events', domainEventType: 'booking journey event', order: 100, event: 'server side form submit' },
-					{ type: 'domain_events', domainEventType: 'booking journey event', order: 101, event: 'submitter gathering validator data started' },
-					{ type: 'domain_events', domainEventType: 'booking journey event', order: 102, event: 'submitter gathering validator data finished' },
-					{ type: 'domain_events', domainEventType: 'booking journey event', order: 103, event: 'submitter validation finished' },
-					{ type: 'domain_events', domainEventType: 'booking journey event', order: 111, event: 'submitter started booking via services' },
-					{ type: 'domain_events', domainEventType: 'booking journey event', order: 112, event: 'submitter finished booking via services' },
-					{ type: 'domain_events', domainEventType: 'booking journey event', order: 113, event: 'submitter started sending emails' },
-					{ type: 'domain_events', domainEventType: 'booking journey event', order: 114, event: 'submitter finished sending emails' },
 					{ type: 'domain_events', domainEventType: 'booking journey event', event: 'server side success' }
 				]
-			}).eventsTracked).to.be('clickedbook validation clickedbook validation ipgrequest ipgresponse formsubmittedclient serversideformsubmit submittergatheringvalidatordatastarted submittergatheringvalidatordatafinished submittervalidationfinished submitterstartedbookingviaservices submitterfinishedbookingviaservices submitterstartedsendingemails submitterfinishedsendingemails serversidesuccess');
+			}).eventsTracked).to.be('clickedbook validation clickedbook validation ipgrequest ipgresponse formsubmittedclient serversideformsubmit serversidesuccess');
 		});
 	});
 
 	it('sets validation fails', function() {
-		expect(buildBookingJourney({ 
+		expect(buildBookingJourney({
 			events: [
 				{ type: 'domain_events', domainEventType: 'booking journey event', event: 'validation', state: 'false' },
 				{ type: 'domain_events', domainEventType: 'booking journey event', event: 'validation', state: 'false' },
@@ -66,7 +71,7 @@ describe('buildRequests', function() {
 	});
 
 	it('sets ipg fails', function() {
-		expect(buildBookingJourney({ 
+		expect(buildBookingJourney({
 			events: [
 				{ type: 'domain_events', domainEventType: 'booking journey event', event: 'ipgresponse', state: 'error' },
 				{ type: 'domain_events', domainEventType: 'booking journey event', event: 'ipgresponse', state: 'error' },
@@ -78,7 +83,7 @@ describe('buildRequests', function() {
 	});
 
 	it('sets enquiry guid', function() {
-		expect(buildBookingJourney({ 
+		expect(buildBookingJourney({
 			events: [
 				{ type: 'domain_events', domainEventType: 'booking journey event', event: 'server side form submit', eg: 'random-guid-goes-here' }
 			]
@@ -86,7 +91,7 @@ describe('buildRequests', function() {
 	});
 
 	it('sets ipgRetries', function() {
-		expect(buildBookingJourney({ 
+		expect(buildBookingJourney({
 			events: [
 				{ type: 'domain_events', domainEventType: 'booking journey event', event: 'server side IPG retry' }
 			]
@@ -96,7 +101,7 @@ describe('buildRequests', function() {
 	describe('sets ipgHang', function() {
 		describe('userResponse', function() {
 			it('to exit when no other requests seen', function() {
-				expect(buildBookingJourney({ 
+				expect(buildBookingJourney({
 					events: [
 						{ type: 'lr_varnish_request' },
 						{ type: 'domain_events', domainEventType: 'booking journey event', event: 'clickedbook' },
@@ -106,9 +111,9 @@ describe('buildRequests', function() {
 					]
 				}).ipgHang.userResponse).to.be('exit');
 			});
-			
+
 			it('to returnToSite when lr_varnish_request seen after waitonipg', function() {
-				expect(buildBookingJourney({ 
+				expect(buildBookingJourney({
 					events: [
 						{ type: 'lr_varnish_request' },
 						{ type: 'domain_events', domainEventType: 'booking journey event', event: 'clickedbook' },
@@ -123,7 +128,7 @@ describe('buildRequests', function() {
 
 		describe('timeSpentWaitingBeforeExit', function() {
 			it('to the time in milliseconds between timestamps of last ipgrequest and last waitonipg', function() {
-				expect(buildBookingJourney({ 
+				expect(buildBookingJourney({
 					events: [
 						{ type: 'lr_varnish_request' },
 						{ type: 'domain_events', domainEventType: 'booking journey event', event: 'clickedbook' },
@@ -137,16 +142,16 @@ describe('buildRequests', function() {
 
 		describe('lastJavaScriptError', function() {
 			it('to the details of the last waitonipg', function() {
-				expect(buildBookingJourney({ 
+				expect(buildBookingJourney({
 					events: [
 						{ type: 'lr_varnish_request' },
 						{ type: 'domain_events', domainEventType: 'booking journey event', event: 'clickedbook' },
 						{ type: 'domain_events', domainEventType: 'booking journey event', event: 'validation' },
 						{ '@timestamp': '2014-10-23T08:09:11.676Z', type: 'domain_events', domainEventType: 'booking journey event', event: 'ipgrequest' },
-						{ 
-							'@timestamp': '2014-10-23T08:09:12.676Z', 
-							type: 'domain_events', 
-							domainEventType: 'booking journey event', 
+						{
+							'@timestamp': '2014-10-23T08:09:12.676Z',
+							type: 'domain_events',
+							domainEventType: 'booking journey event',
 							event: 'waitonipg',
 							'errorLinenumber': 1,
 							'errorMessage': 'An error occurred',
@@ -166,7 +171,7 @@ describe('buildRequests', function() {
 
 	describe('furthestPointReached set', function() {
 		it('to clickedbook when last booking journey event is clickedbook', function() {
-			expect(buildBookingJourney({ 
+			expect(buildBookingJourney({
 				events: [
 					{ type: 'domain_events', domainEventType: 'booking journey event', event: 'clickedbook' }
 				]
@@ -174,7 +179,7 @@ describe('buildRequests', function() {
 		});
 
 		it('to validation when last booking journey event is validation', function() {
-			expect(buildBookingJourney({ 
+			expect(buildBookingJourney({
 				events: [
 					{ type: 'domain_events', domainEventType: 'booking journey event', event: 'clickedbook' },
 					{ type: 'domain_events', domainEventType: 'booking journey event', event: 'validation' }
@@ -183,7 +188,7 @@ describe('buildRequests', function() {
 		});
 
 		it('to ipgrequest when last booking journey event is ipgrequest', function() {
-			expect(buildBookingJourney({ 
+			expect(buildBookingJourney({
 				events: [
 					{ type: 'domain_events', domainEventType: 'booking journey event', event: 'clickedbook' },
 					{ type: 'domain_events', domainEventType: 'booking journey event', event: 'validation' },
@@ -193,7 +198,7 @@ describe('buildRequests', function() {
 		});
 
 		it('to ipgresponse when last booking journey event is ipgresponse', function() {
-			expect(buildBookingJourney({ 
+			expect(buildBookingJourney({
 				events: [
 					{ type: 'domain_events', domainEventType: 'booking journey event', event: 'clickedbook' },
 					{ type: 'domain_events', domainEventType: 'booking journey event', event: 'validation' },
@@ -204,7 +209,7 @@ describe('buildRequests', function() {
 		});
 
 		it('to clientsidecomplete when last booking journey event is clientsidecomplete', function() {
-			expect(buildBookingJourney({ 
+			expect(buildBookingJourney({
 				events: [
 					{ type: 'domain_events', domainEventType: 'booking journey event', event: 'clickedbook' },
 					{ type: 'domain_events', domainEventType: 'booking journey event', event: 'validation' },
@@ -216,7 +221,7 @@ describe('buildRequests', function() {
 		});
 
 		it('to clientsidecomplete when last booking journey event is stillactive', function() {
-			expect(buildBookingJourney({ 
+			expect(buildBookingJourney({
 				events: [
 					{ type: 'domain_events', domainEventType: 'booking journey event', event: 'clickedbook' },
 					{ type: 'domain_events', domainEventType: 'booking journey event', event: 'validation' },
