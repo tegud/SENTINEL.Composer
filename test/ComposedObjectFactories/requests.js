@@ -172,7 +172,7 @@ describe('buildRequests', function() {
 		}).providersEncountered).to.be('HiltonOta');
 	});
 
-	describe('sets releventRequestIds', function(){
+	describe('sets bookingRequestIds', function(){
 		it('should only take requestIds that occur on the booking form or confirmation page', function(){expect(buildRequests({ 
 			events: [
 				{ type: 'lr_varnish_request', requestId: '1', url_page_type: 'booking' },
@@ -181,7 +181,7 @@ describe('buildRequests', function() {
 				{ type: 'lr_varnish_request', requestId: '4', url_page_type: 'booking' },
 				{ type: 'lr_varnish_request', requestId: '5', url_page_type: 'booking-confirmation' },
 			]
-		}).releventRequestIds).to.be('1 2 4 5');
+		}).bookingRequestIds).to.be('1 2 4 5');
 		})
 	});
 });
