@@ -5,6 +5,7 @@ var EventEmitter = require('events').EventEmitter;
 var Promise = require('bluebird');
 var fs = require('fs');
 var Server = require('../lib/server')
+var _ = require('lodash');
 
 describe('SENTINEL.Composer', function() {
 	describe('event is inputted via udp', function() {
@@ -76,6 +77,10 @@ describe('SENTINEL.Composer', function() {
 						var data = msg.toString('utf-8');
 						var parsedData = JSON.parse(data);
 
+						if(parsedData.type !== 'session') {
+							return;
+						}
+
 						expect(parsedData.requests.total).to.be(3);
 						done();
 					});
@@ -89,6 +94,10 @@ describe('SENTINEL.Composer', function() {
 					udpClient.on("message", function messageReceived(msg) {
 						var data = msg.toString('utf-8');
 						var parsedData = JSON.parse(data);
+
+						if(parsedData.type !== 'session') {
+							return;
+						}
 
 						expect(parsedData.requests.funnelExitedAt).to.be('hotel-details');
 						done();
@@ -106,6 +115,10 @@ describe('SENTINEL.Composer', function() {
 						var data = msg.toString('utf-8');
 						var parsedData = JSON.parse(data);
 
+						if(parsedData.type !== 'session') {
+							return;
+						}
+
 						expect(parsedData.errors.total).to.be(2);
 						done();
 					});
@@ -122,6 +135,10 @@ describe('SENTINEL.Composer', function() {
 					var data = msg.toString('utf-8');
 					var parsedData = JSON.parse(data);
 
+					if(parsedData.type !== 'session') {
+						return;
+					}
+
 					expect(parsedData.booked).to.be(false);
 					done();
 				});
@@ -136,6 +153,10 @@ describe('SENTINEL.Composer', function() {
 					var data = msg.toString('utf-8');
 					var parsedData = JSON.parse(data);
 
+					if(parsedData.type !== 'session') {
+						return;
+					}
+
 					expect(parsedData.booked).to.be(true);
 					done();
 				});
@@ -149,6 +170,10 @@ describe('SENTINEL.Composer', function() {
 				udpClient.on("message", function messageReceived(msg) {
 					var data = msg.toString('utf-8');
 					var parsedData = JSON.parse(data);
+
+					if(parsedData.type !== 'session') {
+						return;
+					}
 
 					expect(parsedData.bookingDetails).to.eql({
 						isTestBooking: false,
@@ -186,6 +211,10 @@ describe('SENTINEL.Composer', function() {
 					udpClient.on("message", function messageReceived(msg) {
 						var data = msg.toString('utf-8');
 						var parsedData = JSON.parse(data);
+
+						if(parsedData.type !== 'session') {
+							return;
+						}
 
 						expect(parsedData.user.ip).to.eql({
 							"address": '66.249.69.105',
@@ -225,6 +254,10 @@ describe('SENTINEL.Composer', function() {
 						var data = msg.toString('utf-8');
 						var parsedData = JSON.parse(data);
 
+						if(parsedData.type !== 'session') {
+							return;
+						}
+
 						expect(parsedData.user.userAgent).to.eql({
 							full: 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)',
 							name: "Googlebot",
@@ -248,6 +281,10 @@ describe('SENTINEL.Composer', function() {
 							var data = msg.toString('utf-8');
 							var parsedData = JSON.parse(data);
 
+							if(parsedData.type !== 'session') {
+								return;
+							}
+
 							expect(parsedData.user.type).to.be('GoodBot');
 							done();
 						});
@@ -265,6 +302,10 @@ describe('SENTINEL.Composer', function() {
 							var data = msg.toString('utf-8');
 							var parsedData = JSON.parse(data);
 
+							if(parsedData.type !== 'session') {
+								return;
+							}
+
 							expect(parsedData.user.type).to.be('BadBot');
 							done();
 						});
@@ -279,10 +320,39 @@ describe('SENTINEL.Composer', function() {
 							var data = msg.toString('utf-8');
 							var parsedData = JSON.parse(data);
 
+							if(parsedData.type !== 'session') {
+								return;
+							}
+
 							expect(parsedData.user.type).to.be('Human');
 							done();
 						});
 					});
+				});
+			});
+		});
+
+		describe('created new Cross Application Request object', function() {
+			it('sends session and cross-application-request messages', function(done) {
+				var testData = loadTestData('three.json');
+				var messages = [];
+
+				sendTest(testData, 5);
+
+				udpClient.on("message", function messageReceived(msg) {
+					var data = msg.toString('utf-8');
+					var parsedData = JSON.parse(data);
+
+					messages.push(parsedData);
+
+					if(messages.length === 4) {
+						var typeCounts = _.countBy(messages, function(item) { return item.type; });
+
+						expect(typeCounts.session || 0).to.be(1);
+						expect(typeCounts['cross_application_request'] || 0).to.be(3);
+
+						done();
+					}
 				});
 			});
 		});

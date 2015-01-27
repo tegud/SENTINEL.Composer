@@ -1,5 +1,5 @@
 var expect = require('expect.js');
-var buildBookingJourney = require('../../lib/ComposedObjectFactories/bookingJourney');
+var buildBookingJourney = require('../../../lib/ComposedObjectFactories/session/bookingJourney');
 
 describe('buildRequests', function() {
 	it('does not fail when there are no requests', function() {

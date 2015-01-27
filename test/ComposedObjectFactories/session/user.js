@@ -1,5 +1,5 @@
 var expect = require('expect.js');
-var buildUser = require('../../lib/ComposedObjectFactories/user');
+var buildUser = require('../../../lib/ComposedObjectFactories/session/user');
 
 describe('buildUser', function() {
 	describe('sets user.type', function() {

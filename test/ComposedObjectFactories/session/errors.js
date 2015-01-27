@@ -1,5 +1,5 @@
 var expect = require('expect.js');
-var buildErrors = require('../../lib/ComposedObjectFactories/errors');
+var buildErrors = require('../../../lib/ComposedObjectFactories/session/errors');
 
 describe('buildErrors', function() {
 	it('sets lastError to the last error encountered', function() {

@@ -1,5 +1,5 @@
 var expect = require('expect.js');
-var buildRequests = require('../../lib/ComposedObjectFactories/session');
+var buildRequests = require('../../../lib/ComposedObjectFactories/session');
 
 describe('buildSession', function() {
 	it('sets type to "session".', function() {

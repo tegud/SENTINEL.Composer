@@ -1,5 +1,5 @@
 var expect = require('expect.js');
-var buildBooking = require('../../lib/ComposedObjectFactories/bookingInfo');
+var buildBooking = require('../../../lib/ComposedObjectFactories/session/bookingInfo');
 
 describe('buildBooking', function() {
 	it('sets numberOfBookings to the number of booking made domain events', function() {
