@@ -15,10 +15,28 @@ describe('SENTINEL.Composer', function() {
 
 		beforeEach(function(done) {
 			server = new Server({
-				memoryStore: {
-					maxInactivityUnits: 'ms',
-					maxInactivity: 20
-				},
+				aggregators: [
+					{
+						type: 'session',
+						subscribedTypes: ['lr_varnish_request', 'domain_events', 'lr_errors'],
+						keyProperty: 'sessionId',
+						factory: 'session',
+						memoryStore: {
+							maxInactivityUnits: 'ms',
+							maxInactivity: 20
+						}
+					},
+					{
+						type: 'cross_application_request',
+						subscribedTypes: ['lr_varnish_request', 'ms_logging', 'ms_errors', 'hotels_acquisitions_errors', 'api_varnish', 'hotel_api_errors'],
+						keyProperty: 'crossApplicationRequestId',
+						factory: 'crossApplicationRequest',
+						memoryStore: {
+							maxInactivityUnits: 'ms',
+							maxInactivity: 20
+						}
+					}
+				],
 				refreshRate: 10,
 				listenOnPort: 1234,
 				emitOnPort: 1235,
@@ -350,6 +368,30 @@ describe('SENTINEL.Composer', function() {
 
 						expect(typeCounts.session || 0).to.be(1);
 						expect(typeCounts['cross_application_request'] || 0).to.be(3);
+
+						done();
+					}
+				});
+			});
+
+			it('filters out irrelevent events', function(done) {
+				var testData = loadTestData('booking.json');
+				var messages = [];
+
+				sendTest(testData, 5);
+
+				udpClient.on("message", function messageReceived(msg) {
+					var data = msg.toString('utf-8');
+					var parsedData = JSON.parse(data);
+
+					messages.push(parsedData);
+
+					if(messages.length === 2) {
+						var crossApplicationRequest = _.chain(messages).filter(function(message) {
+							return message.type === 'cross_application_request';
+						}).first().value();
+
+						expect(crossApplicationRequest['@timestamp']).to.be('2014-06-18T20:36:12.928Z');
 
 						done();
 					}

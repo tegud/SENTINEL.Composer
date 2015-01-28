@@ -14,6 +14,7 @@ describe('crossApplicationRequest', function() {
 		it('to last log item with @timestamp', function() {
 			expect(buildRequest({
 				events: [
+					{ "type": "lr_varnish_request", "@timestamp": "WRONG" },
 					{ "type": "lr_varnish_request", "@timestamp": "fdsfsdgsgs" }
 				]
 			})['@timestamp']).to.eql('fdsfsdgsgs');
