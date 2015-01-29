@@ -15,6 +15,9 @@ describe('SENTINEL.Composer', function() {
 
 		beforeEach(function(done) {
 			server = new Server({
+				listeners: [
+					{ type: 'udp', port: 1234 }
+				],
 				aggregators: [
 					{
 						type: 'session',
@@ -38,7 +41,6 @@ describe('SENTINEL.Composer', function() {
 					}
 				],
 				refreshRate: 10,
-				listenOnPort: 1234,
 				emitOnPort: 1235,
 				logLevel: 'ERROR'
 			});
