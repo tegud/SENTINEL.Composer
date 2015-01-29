@@ -4,7 +4,7 @@ var dgram = require('dgram');
 var EventEmitter = require('events').EventEmitter;
 var Promise = require('bluebird');
 var fs = require('fs');
-var Server = require('../lib/server')
+var Server = require('../lib/server');
 var _ = require('lodash');
 
 describe('SENTINEL.Composer', function() {
