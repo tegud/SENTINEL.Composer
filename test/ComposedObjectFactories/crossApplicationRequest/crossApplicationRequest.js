@@ -40,35 +40,48 @@ describe('crossApplicationRequest', function() {
 		});
 	});
 
-	describe('sets noHotelDetailsRates on hotel-details page type', function() {
-		it('to true when ms_logging item indicates no rates were displayed', function() {
+	describe('sets noHotelDetailsRates on rates request', function() {
+		it('to true when header indicates no rates were displayed', function() {
 			expect(buildRequest({
 				events: [
-					{ "type": "ms_logging", "message": "rates response with no rooms" },
-					{ "type": "lr_varnish_request", "url_page_type": "hotel-details" }
+					{ "type": "lr_varnish_request", "url_page": "/rates/", "resp_headers": { "X_debug_no_rates": "true" } }
 				]
 			}).noHotelDetailsRates).to.be(true);
 		});
 
-		it('to false when ms_logging item indicates no rates were displayed', function() {
+		it('to false when header not present', function() {
 			expect(buildRequest({
 				events: [
-					{ "type": "lr_varnish_request", "url_page_type": "hotel-details" }
+					{ "type": "lr_varnish_request", "url_page": "/rates/" }
 				]
 			}).noHotelDetailsRates).to.be(false);
 		});
 	});
 
-	it('sets api paths requested', function() {
-		expect(buildRequest({
-			events: [
-				{ "type": "api_varnish", "url_path": "/seocontent/seocontent/" },
-				{ "type": "api_varnish", "url_path": "/hotel/203772/reviews/" },
-				{ "type": "api_varnish", "url_path": "/hotel/203772/rates/byoccupancy/" },
-				{ "type": "lr_varnish_request" }
-			]
-		}).apiRequests.paths).to.eql(['/seocontent/seocontent/','/hotel/203772/reviews/','/hotel/203772/rates/byoccupancy/']);
+	describe('apiRequests', function() {
+		it('sets api paths requested', function() {
+			expect(buildRequest({
+				events: [
+					{ "type": "api_varnish", "url_path": "/seocontent/seocontent/" },
+					{ "type": "api_varnish", "url_path": "/hotel/203772/reviews/" },
+					{ "type": "api_varnish", "url_path": "/hotel/203772/rates/byoccupancy/" },
+					{ "type": "lr_varnish_request" }
+				]
+			}).apiRequests.paths).to.eql(['/seocontent/seocontent/','/hotel/203772/reviews/','/hotel/203772/rates/byoccupancy/']);
+		});
+
+		it('sets api request count', function() {
+			expect(buildRequest({
+				events: [
+					{ "type": "api_varnish", "url_path": "/seocontent/seocontent/" },
+					{ "type": "api_varnish", "url_path": "/hotel/203772/reviews/" },
+					{ "type": "api_varnish", "url_path": "/hotel/203772/rates/byoccupancy/" },
+					{ "type": "lr_varnish_request" }
+				]
+			}).apiRequests.count).to.eql(3);
+		});
 	});
+	
 
 	describe('sets connectivity errors', function() {
 		describe('count', function() {
