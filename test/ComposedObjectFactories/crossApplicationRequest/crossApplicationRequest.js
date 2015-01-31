@@ -83,14 +83,34 @@ describe('crossApplicationRequest', function() {
 	});
 	
 
-	describe('sets connectivity errors', function() {
-		describe('count', function() {
+	describe('sets connectivity', function() {
+		describe('requestCount', function() {
+			// 
+			it('to 0 when no requests', function() {
+				expect(buildRequest({
+					events: [
+						{ "type": "lr_varnish_request", "url_page_type": "hotel-details" }
+					]
+				}).connectivity.requestCount).to.be(0);
+			});
+
+			it('to 1 when one request', function() {
+				expect(buildRequest({
+					events: [
+						{ "type": "hotels_acquisitions_request" },
+						{ "type": "lr_varnish_request", "url_page_type": "hotel-details" }
+					]
+				}).connectivity.requestCount).to.be(1);
+			});
+		});
+
+		describe('errorCount', function() {
 			it('to 0 when no connectivity errors', function() {
 				expect(buildRequest({
 					events: [
 						{ "type": "lr_varnish_request", "url_page_type": "hotel-details" }
 					]
-				}).connectivityErrors.count).to.be(0);
+				}).connectivity.errorCount).to.be(0);
 			});
 
 			it('to 1 when connectivity errors have occurred', function() {
@@ -99,7 +119,7 @@ describe('crossApplicationRequest', function() {
 						{ "type": "hotel_acquisitions_errors" },
 						{ "type": "lr_varnish_request", "url_page_type": "hotel-details" }
 					]
-				}).connectivityErrors.count).to.be(1);
+				}).connectivity.errorCount).to.be(1);
 			});
 		});
 
@@ -110,7 +130,7 @@ describe('crossApplicationRequest', function() {
 						{ "type": "hotel_acquisitions_errors", x: 12345 },
 						{ "type": "lr_varnish_request", "url_page_type": "hotel-details" }
 					]
-				}).connectivityErrors.lastError.x).to.be(12345);
+				}).connectivity.lastError.x).to.be(12345);
 			});
 
 			it('sets @timestamp to timestamp', function() {
@@ -119,7 +139,7 @@ describe('crossApplicationRequest', function() {
 						{ "type": "hotel_acquisitions_errors", "@timestamp": 12345 },
 						{ "type": "lr_varnish_request", "url_page_type": "hotel-details" }
 					]
-				}).connectivityErrors.lastError.timestamp).to.be(12345);
+				}).connectivity.lastError.timestamp).to.be(12345);
 			});
 		});
 	});
