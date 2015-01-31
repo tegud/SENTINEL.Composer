@@ -31,7 +31,7 @@ describe('SENTINEL.Composer', function() {
 					},
 					{
 						type: 'cross_application_request',
-						subscribedTypes: ['lr_varnish_request', 'ms_logging', 'ms_errors', 'hotels_acquisitions_errors', 'api_varnish', 'hotel_api_errors'],
+						subscribedTypes: ['lr_varnish_request', 'ms_logging', 'ms_errors', 'hotels_acquisitions_errors', 'hotels_acquisitions_request', 'api_varnish', 'hotel_api_errors'],
 						keyProperty: 'crossApplicationRequestId',
 						factory: 'crossApplicationRequest',
 						memoryStore: {
