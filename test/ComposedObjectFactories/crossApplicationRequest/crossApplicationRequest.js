@@ -44,7 +44,7 @@ describe('crossApplicationRequest', function() {
 		it('to true when header indicates no rates were displayed', function() {
 			expect(buildRequest({
 				events: [
-					{ "type": "lr_varnish_request", "url_page": "/rates/", "resp_headers": { "X_debug_no_rates": "true" } }
+					{ "type": "lr_varnish_request", "url_page": "/rates/", "resp_headers": { "x_debug_no_rates": "true" } }
 				]
 			}).noHotelDetailsRates).to.be(true);
 		});
@@ -80,12 +80,46 @@ describe('crossApplicationRequest', function() {
 				]
 			}).apiRequests.count).to.eql(3);
 		});
+
+		it('sets api request total time', function() {
+			expect(buildRequest({
+				events: [
+					{ "type": "api_varnish", "url_path": "/seocontent/seocontent/", ttfb: 100 },
+					{ "type": "api_varnish", "url_path": "/hotel/203772/reviews/", ttfb: 150 },
+					{ "type": "api_varnish", "url_path": "/hotel/203772/rates/byoccupancy/", ttfb: 200 },
+					{ "type": "lr_varnish_request" }
+				]
+			}).apiRequests.totalTime).to.eql(450);
+		});
+
+		describe('sets longest request', function() {
+			it('endpoint', function() {
+				expect(buildRequest({
+					events: [
+						{ "type": "api_varnish", "url_path": "/seocontent/seocontent/", ttfb: 100 },
+						{ "type": "api_varnish", "url_path": "/hotel/203772/reviews/", ttfb: 150 },
+						{ "type": "api_varnish", "api_endpoint": "hotel", "url_path": "/hotel/203772/rates/byoccupancy/", ttfb: 200 },
+						{ "type": "lr_varnish_request" }
+					]
+				}).apiRequests.slowest.endpoint).to.eql("hotel");
+			});
+
+			it('ttfb', function() {
+				expect(buildRequest({
+					events: [
+						{ "type": "api_varnish", "url_path": "/seocontent/seocontent/", ttfb: 100 },
+						{ "type": "api_varnish", "url_path": "/hotel/203772/reviews/", ttfb: 150 },
+						{ "type": "api_varnish", "api_endpoint": "hotel", "url_path": "/hotel/203772/rates/byoccupancy/", ttfb: 200 },
+						{ "type": "lr_varnish_request" }
+					]
+				}).apiRequests.slowest.ttfb).to.eql(200);
+			});
+		});
 	});
 	
 
 	describe('sets connectivity', function() {
 		describe('requestCount', function() {
-			// 
 			it('to 0 when no requests', function() {
 				expect(buildRequest({
 					events: [
@@ -102,6 +136,33 @@ describe('crossApplicationRequest', function() {
 					]
 				}).connectivity.requestCount).to.be(1);
 			});
+		});
+
+		it('sets method', function() {
+			expect(buildRequest({
+				events: [
+					{ "type": "hotels_acquisitions_request", "availabilityServiceMethod": "TEST" },
+					{ "type": "lr_varnish_request", "url_page_type": "hotel-details" }
+				]
+			}).connectivity.method).to.be("TEST");
+		});
+
+		it('sets hasRates', function() {
+			expect(buildRequest({
+				events: [
+					{ "type": "hotels_acquisitions_request", "hasRates": true },
+					{ "type": "lr_varnish_request", "url_page_type": "hotel-details" }
+				]
+			}).connectivity.hasRates).to.be(true);
+		});
+
+		it('sets provider', function() {
+			expect(buildRequest({
+				events: [
+					{ "type": "hotels_acquisitions_request", "provider": "TEST" },
+					{ "type": "lr_varnish_request", "url_page_type": "hotel-details" }
+				]
+			}).connectivity.provider).to.be("TEST");
 		});
 
 		describe('errorCount', function() {
