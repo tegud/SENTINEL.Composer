@@ -8,16 +8,8 @@ describe('buildPartnerJourney', function () {
         })).to.eql({});
     });
 
-    it('sets partnerCodes to nothing if no partner codes in the requests', function () {
-        expect(buildPartnerJourney({
-            events: [{
-                "type": "lr_varnish_request"
-            }]
-        }).partnerCodes).to.eql('');
-    });
-
-    it('sets partnerCodes to the partner codes in the requests', function () {
-        expect(buildPartnerJourney({
+    it('logs unique partner codes in the requests', function () {
+        var request = buildPartnerJourney({
             events: [{
                 "type": "lr_varnish_request"
             }, {
@@ -36,11 +28,13 @@ describe('buildPartnerJourney', function () {
                     "x_log_partner": "partner=2398"
                 }
             }]
-        }).partnerCodes).to.eql('partner=1301, partner=2398');
+        });
+        expect(request.partnerCodeOrder).to.eql('NOPARTNERCODE, partner=1301, partner=2398');
+        expect(request.partnerCodeNumber).to.eql(3);
     });
 
-    it('sets partnerCodes to the order partner codes were set', function () {
-        expect(buildPartnerJourney({
+    it('log partner codes in the order they were set', function () {
+        var request = buildPartnerJourney({
             events: [{
                 "type": "lr_varnish_request",
                 "resp_headers": {
@@ -57,6 +51,30 @@ describe('buildPartnerJourney', function () {
                     "x_log_partner": "partner=1301"
                 }
             }]
-        }).partnerCodes).to.eql('partner=1301, partner=2398, partner=1301');
+        });
+        expect(request.partnerCodeOrder).to.eql('partner=1301, partner=2398, partner=1301');
+        expect(request.partnerCodeNumber).to.eql(3);
+    });
+
+    it('logs "NOPARTNERCODE" as a partner code if the partner code header disappears', function () {
+        var request = buildPartnerJourney({
+            events: [{
+                "type": "lr_varnish_request"
+            }, {
+                "type": "lr_varnish_request",
+                "resp_headers": {
+                    "x_log_partner": "partner=1301"
+                }
+            }, {
+                "type": "lr_varnish_request"
+            }, {
+                "type": "lr_varnish_request",
+                "resp_headers": {
+                    "x_log_partner": "partner=2398"
+                }
+            }]
+        });
+        expect(request.partnerCodeOrder).to.eql('NOPARTNERCODE, partner=1301, NOPARTNERCODE, partner=2398');
+        expect(request.partnerCodeNumber).to.eql(4);
     });
 });
