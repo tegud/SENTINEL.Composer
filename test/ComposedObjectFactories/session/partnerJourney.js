@@ -30,8 +30,8 @@ describe('buildPartnerJourney', function () {
                     }
                 }]
             });
-            expect(partnerJourney.partnerCodeOrder).to.eql('NOPARTNERCODE,partner=1301,partner=2398');
-            expect(partnerJourney.partnerCodeNumber).to.eql(3);
+            expect(partnerJourney.order).to.eql('NOPARTNERCODE,partner=1301,partner=2398');
+            expect(partnerJourney.number).to.eql(3);
         });
 
         it('log partner codes in the order they were set', function () {
@@ -53,8 +53,8 @@ describe('buildPartnerJourney', function () {
                     }
                 }]
             });
-            expect(partnerJourney.partnerCodeOrder).to.eql('partner=1301,partner=2398,partner=1301');
-            expect(partnerJourney.partnerCodeNumber).to.eql(3);
+            expect(partnerJourney.order).to.eql('partner=1301,partner=2398,partner=1301');
+            expect(partnerJourney.number).to.eql(3);
         });
 
         it('logs "NOPARTNERCODE" as a partner code if the partner code header disappears', function () {
@@ -75,13 +75,13 @@ describe('buildPartnerJourney', function () {
                     }
                 }]
             });
-            expect(partnerJourney.partnerCodeOrder).to.eql('NOPARTNERCODE,partner=1301,NOPARTNERCODE,partner=2398');
-            expect(partnerJourney.partnerCodeNumber).to.eql(4);
+            expect(partnerJourney.order).to.eql('NOPARTNERCODE,partner=1301,NOPARTNERCODE,partner=2398');
+            expect(partnerJourney.number).to.eql(4);
         });
     });
 
-    describe('partnerCodeChanged', function () {
-        it('logs partnerCodeChanged as true if the partner code has changed from the previous request', function () {
+    describe('changed', function () {
+        it('logs changed as true if the partner code has changed from the previous request', function () {
             expect(buildPartnerJourney({
                 events: [{
                     "type": "lr_varnish_request"
@@ -93,10 +93,10 @@ describe('buildPartnerJourney', function () {
                         "X_LOG_Partner": "partner=1301"
                     }
                 }]
-            }).partnerCodeChanged).to.eql(true);
+            }).changed).to.eql(true);
         });
 
-        it('logs partnerCodeChanged as false if the partner code has not changed from the previous request', function () {
+        it('logs changed as false if the partner code has not changed from the previous request', function () {
             expect(buildPartnerJourney({
                 events: [{
                     "type": "lr_varnish_request",
@@ -114,7 +114,7 @@ describe('buildPartnerJourney', function () {
                         "X_LOG_Partner": "partner=1301"
                     }
                 }]
-            }).partnerCodeChanged).to.eql(false);
+            }).changed).to.eql(false);
         });
     });
 });
