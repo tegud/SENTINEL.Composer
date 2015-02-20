@@ -16,17 +16,17 @@ describe('buildPartnerJourney', function () {
                 }, {
                     "type": "lr_varnish_request",
                     "resp_headers": {
-                        "x_log_partner": "partner=1301"
+                        "X_LOG_Partner": "partner=1301"
                     }
                 }, {
                     "type": "lr_varnish_request",
                     "resp_headers": {
-                        "x_log_partner": "partner=1301"
+                        "X_LOG_Partner": "partner=1301"
                     }
                 }, {
                     "type": "lr_varnish_request",
                     "resp_headers": {
-                        "x_log_partner": "partner=2398"
+                        "X_LOG_Partner": "partner=2398"
                     }
                 }]
             });
@@ -39,17 +39,17 @@ describe('buildPartnerJourney', function () {
                 events: [{
                     "type": "lr_varnish_request",
                     "resp_headers": {
-                        "x_log_partner": "partner=1301"
+                        "X_LOG_Partner": "partner=1301"
                     }
                 }, {
                     "type": "lr_varnish_request",
                     "resp_headers": {
-                        "x_log_partner": "partner=2398"
+                        "X_LOG_Partner": "partner=2398"
                     }
                 }, {
                     "type": "lr_varnish_request",
                     "resp_headers": {
-                        "x_log_partner": "partner=1301"
+                        "X_LOG_Partner": "partner=1301"
                     }
                 }]
             });
@@ -64,14 +64,14 @@ describe('buildPartnerJourney', function () {
                 }, {
                     "type": "lr_varnish_request",
                     "resp_headers": {
-                        "x_log_partner": "partner=1301"
+                        "X_LOG_Partner": "partner=1301"
                     }
                 }, {
                     "type": "lr_varnish_request"
                 }, {
                     "type": "lr_varnish_request",
                     "resp_headers": {
-                        "x_log_partner": "partner=2398"
+                        "X_LOG_Partner": "partner=2398"
                     }
                 }]
             });
@@ -90,7 +90,7 @@ describe('buildPartnerJourney', function () {
                 }, {
                     "type": "lr_varnish_request",
                     "resp_headers": {
-                        "x_log_partner": "partner=1301"
+                        "X_LOG_Partner": "partner=1301"
                     }
                 }]
             }).partnerCodeChanged).to.eql(true);
@@ -101,17 +101,17 @@ describe('buildPartnerJourney', function () {
                 events: [{
                     "type": "lr_varnish_request",
                     "resp_headers": {
-                        "x_log_partner": "partner=1301"
+                        "X_LOG_Partner": "partner=1301"
                     }
                 }, {
                     "type": "lr_varnish_request",
                     "resp_headers": {
-                        "x_log_partner": "partner=1301"
+                        "X_LOG_Partner": "partner=1301"
                     }
                 }, {
                     "type": "lr_varnish_request",
                     "resp_headers": {
-                        "x_log_partner": "partner=1301"
+                        "X_LOG_Partner": "partner=1301"
                     }
                 }]
             }).partnerCodeChanged).to.eql(false);
