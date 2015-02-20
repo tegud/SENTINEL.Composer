@@ -35,7 +35,7 @@ describe('buildPartnerJourney', function () {
                 }]
             });
             expect(partnerJourney.number).to.eql(3);
-            expect(partnerJourney.order).to.eql('NOPARTNERCODE,partner=1301,partner=2398');
+            expect(partnerJourney.order).to.eql('NOPARTNERCODE,1301,2398');
             expect(partnerJourney.urls).to.eql('/en/Hotels.aspx,/en/p1301/Hotels.aspx,/en/p2398/Hotels.aspx');
         });
 
@@ -62,7 +62,7 @@ describe('buildPartnerJourney', function () {
                 }]
             });
             expect(partnerJourney.number).to.eql(3);
-            expect(partnerJourney.order).to.eql('partner=1301,partner=2398,partner=1301');
+            expect(partnerJourney.order).to.eql('1301,2398,1301');
             expect(partnerJourney.urls).to.eql('/en/p1301/Hotels.aspx,/en/p2398/Hotels.aspx,/en/p1301/Hotels.aspx');
         });
 
@@ -88,7 +88,7 @@ describe('buildPartnerJourney', function () {
                     }
                 }]
             });
-            expect(partnerJourney.order).to.eql('NOPARTNERCODE,partner=1301,NOPARTNERCODE,partner=2398');
+            expect(partnerJourney.order).to.eql('NOPARTNERCODE,1301,NOPARTNERCODE,2398');
             expect(partnerJourney.urls).to.eql('/en/Hotels.aspx,/en/p1301/Hotels.aspx,/en/Hotels.aspx,/en/p2398/Hotels.aspx');
             expect(partnerJourney.number).to.eql(4);
         });
