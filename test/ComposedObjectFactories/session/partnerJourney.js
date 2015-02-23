@@ -76,7 +76,7 @@ describe('buildPartnerJourney', function () {
                     "type": "lr_varnish_request",
                     "url_path": "/en/p1301/Hotels.aspx",
                     "resp_headers": {
-                        "X_LOG_Partner": "partner=1301"
+                        "X_LOG_Partner": "partner=1301&partnervalue=218901"
                     }
                 }, {
                     "type": "lr_varnish_request",
@@ -92,7 +92,7 @@ describe('buildPartnerJourney', function () {
                     }
                 }]
             });
-            expect(partnerJourney.order).to.eql('NOPARTNERCODE,1301,NOPARTNERCODE,2398');
+            expect(partnerJourney.order).to.eql('NOPARTNERCODE,1301-218901,NOPARTNERCODE,2398');
             expect(partnerJourney.urls).to.eql('/en/Hotels.aspx,/en/p1301/Hotels.aspx,/en/Hotels.aspx,/en/p2398/Hotels.aspx');
             expect(partnerJourney.number).to.eql(4);
         });
