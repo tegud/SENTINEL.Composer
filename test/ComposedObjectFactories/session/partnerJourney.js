@@ -70,7 +70,8 @@ describe('buildPartnerJourney', function () {
             var partnerJourney = buildPartnerJourney({
                 events: [{
                     "type": "lr_varnish_request",
-                    "url_path": "/en/Hotels.aspx"
+                    "url_path": "/en/Hotels.aspx",
+                    "resp_headers": {}
                 }, {
                     "type": "lr_varnish_request",
                     "url_path": "/en/p1301/Hotels.aspx",
@@ -79,7 +80,10 @@ describe('buildPartnerJourney', function () {
                     }
                 }, {
                     "type": "lr_varnish_request",
-                    "url_path": "/en/Hotels.aspx"
+                    "url_path": "/en/Hotels.aspx",
+                    "resp_headers": {
+                        "X_LOG_Partner": ""
+                    }
                 }, {
                     "type": "lr_varnish_request",
                     "url_path": "/en/p2398/Hotels.aspx",
