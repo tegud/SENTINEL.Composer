@@ -119,6 +119,14 @@ describe('buildPartnerJourney', function () {
                     "resp_headers": {}
                 }, {
                     "type": "lr_varnish_request",
+                    "url_path": "/en/beacon/bookingformjourney.mvc",
+                    "resp_headers": {}
+                }, {
+                    "type": "lr_varnish_request",
+                    "url_path": "/ajax",
+                    "resp_headers": {}
+                }, {
+                    "type": "lr_varnish_request",
                     "url_path": "/en/p2398/Hotels.aspx",
                     "resp_headers": {
                         "X_LOG_Partner": "partner=2398"
