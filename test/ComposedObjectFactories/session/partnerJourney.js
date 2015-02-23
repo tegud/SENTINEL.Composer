@@ -155,11 +155,9 @@ describe('buildPartnerJourney', function () {
         it('logs changed as true if the partner code has changed from the previous request', function () {
             expect(buildPartnerJourney({
                 events: [{
-                    "type": "lr_varnish_request",
-                    "url_path": "/en/Hotels.aspx"
+                    "type": "lr_varnish_request"
                 }, {
-                    "type": "lr_varnish_request",
-                    "url_path": "/en/Hotels.aspx"
+                    "type": "lr_varnish_request"
                 }, {
                     "type": "lr_varnish_request",
                     "url_path": "/en/p1301/Hotels.aspx",
@@ -174,19 +172,16 @@ describe('buildPartnerJourney', function () {
             expect(buildPartnerJourney({
                 events: [{
                     "type": "lr_varnish_request",
-                    "url_path": "/en/p1301/Hotels.aspx",
                     "resp_headers": {
                         "X_LOG_Partner": "partner=1301"
                     }
                 }, {
                     "type": "lr_varnish_request",
-                    "url_path": "/en/p1301/Hotels.aspx",
                     "resp_headers": {
                         "X_LOG_Partner": "partner=1301"
                     }
                 }, {
                     "type": "lr_varnish_request",
-                    "url_path": "/en/p1301/Hotels.aspx",
                     "resp_headers": {
                         "X_LOG_Partner": "partner=1301"
                     }
