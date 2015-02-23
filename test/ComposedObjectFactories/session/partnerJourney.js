@@ -96,17 +96,53 @@ describe('buildPartnerJourney', function () {
             expect(partnerJourney.urls).to.eql('/en/Hotels.aspx,/en/p1301/Hotels.aspx,/en/Hotels.aspx,/en/p2398/Hotels.aspx');
             expect(partnerJourney.number).to.eql(4);
         });
+
+        it('excludes specific URLs', function () {
+            var partnerJourney = buildPartnerJourney({
+                events: [{
+                    "type": "lr_varnish_request",
+                    "url_path": "/en/Hotels.aspx",
+                    "resp_headers": {}
+                }, {
+                    "type": "lr_varnish_request",
+                    "url_path": "/en/p1301/Hotels.aspx",
+                    "resp_headers": {
+                        "X_LOG_Partner": "partner=1301&partnervalue=218901"
+                    }
+                }, {
+                    "type": "lr_varnish_request",
+                    "url_path": "/en/Rates/13233/",
+                    "resp_headers": {}
+                }, {
+                    "type": "lr_varnish_request",
+                    "url_path": "/en/AutoComplete/Index.mvc",
+                    "resp_headers": {}
+                }, {
+                    "type": "lr_varnish_request",
+                    "url_path": "/en/p2398/Hotels.aspx",
+                    "resp_headers": {
+                        "X_LOG_Partner": "partner=2398"
+                    }
+                }]
+            });
+            expect(partnerJourney.order).to.eql('NOPARTNERCODE,1301-218901,2398');
+            expect(partnerJourney.urls).to.eql('/en/Hotels.aspx,/en/p1301/Hotels.aspx,/en/p2398/Hotels.aspx');
+            expect(partnerJourney.number).to.eql(3);
+        });
     });
 
     describe('changed', function () {
         it('logs changed as true if the partner code has changed from the previous request', function () {
             expect(buildPartnerJourney({
                 events: [{
-                    "type": "lr_varnish_request"
-                }, {
-                    "type": "lr_varnish_request"
+                    "type": "lr_varnish_request",
+                    "url_path": "/en/Hotels.aspx"
                 }, {
                     "type": "lr_varnish_request",
+                    "url_path": "/en/Hotels.aspx"
+                }, {
+                    "type": "lr_varnish_request",
+                    "url_path": "/en/p1301/Hotels.aspx",
                     "resp_headers": {
                         "X_LOG_Partner": "partner=1301"
                     }
@@ -118,16 +154,19 @@ describe('buildPartnerJourney', function () {
             expect(buildPartnerJourney({
                 events: [{
                     "type": "lr_varnish_request",
+                    "url_path": "/en/p1301/Hotels.aspx",
                     "resp_headers": {
                         "X_LOG_Partner": "partner=1301"
                     }
                 }, {
                     "type": "lr_varnish_request",
+                    "url_path": "/en/p1301/Hotels.aspx",
                     "resp_headers": {
                         "X_LOG_Partner": "partner=1301"
                     }
                 }, {
                     "type": "lr_varnish_request",
+                    "url_path": "/en/p1301/Hotels.aspx",
                     "resp_headers": {
                         "X_LOG_Partner": "partner=1301"
                     }
