@@ -119,11 +119,23 @@ describe('buildPartnerJourney', function () {
                     "resp_headers": {}
                 }, {
                     "type": "lr_varnish_request",
+                    "url_path": "/ajax",
+                    "resp_headers": {}
+                }, {
+                    "type": "lr_varnish_request",
                     "url_path": "/en/beacon/bookingformjourney.mvc",
                     "resp_headers": {}
                 }, {
                     "type": "lr_varnish_request",
-                    "url_path": "/ajax",
+                    "url_path": "/en/checkPage",
+                    "resp_headers": {}
+                }, {
+                    "type": "lr_varnish_request",
+                    "url_path": "autoc.php",
+                    "resp_headers": {}
+                }, {
+                    "type": "lr_varnish_request",
+                    "url_path": "en/poi/13212",
                     "resp_headers": {}
                 }, {
                     "type": "lr_varnish_request",
