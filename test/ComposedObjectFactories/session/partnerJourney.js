@@ -36,7 +36,7 @@ describe('buildPartnerJourney', function () {
             });
             expect(partnerJourney.number).to.eql(3);
             expect(partnerJourney.order).to.eql('NOPARTNERCODE,1301,2398');
-            expect(partnerJourney.first).to.eql('NOPARTNERCODE');
+            expect(partnerJourney.first).to.eql('1301');
             expect(partnerJourney.last).to.eql('2398');
             expect(partnerJourney.urls).to.eql('/en/Hotels.aspx,/en/p1301/Hotels.aspx,/en/p2398/Hotels.aspx');
         });
@@ -98,9 +98,30 @@ describe('buildPartnerJourney', function () {
             });
             expect(partnerJourney.number).to.eql(4);
             expect(partnerJourney.order).to.eql('NOPARTNERCODE,1301-218901,NOPARTNERCODE,2398');
-            expect(partnerJourney.first).to.eql('NOPARTNERCODE');
+            expect(partnerJourney.first).to.eql('1301-218901');
             expect(partnerJourney.last).to.eql('2398');
             expect(partnerJourney.urls).to.eql('/en/Hotels.aspx,/en/p1301/Hotels.aspx,/en/Hotels.aspx,/en/p2398/Hotels.aspx');
+        });
+
+        it('logs first and last as nothing if there were no valid partner codes in the journey', function () {
+            var partnerJourney = buildPartnerJourney({
+                events: [{
+                    "type": "lr_varnish_request",
+                    "url_path": "/en/Hotels.aspx",
+                    "resp_headers": {}
+                }, {
+                    "type": "lr_varnish_request",
+                    "url_path": "/en/Hotels.aspx",
+                    "resp_headers": {
+                        "X_LOG_Partner": ""
+                    }
+                }]
+            });
+            expect(partnerJourney.number).to.eql(1);
+            expect(partnerJourney.order).to.eql('NOPARTNERCODE');
+            expect(partnerJourney.first).to.be.undefined;
+            expect(partnerJourney.last).to.be.undefined;
+            expect(partnerJourney.urls).to.eql('/en/Hotels.aspx');
         });
 
         it('excludes specific URLs', function () {
@@ -153,7 +174,7 @@ describe('buildPartnerJourney', function () {
             });
             expect(partnerJourney.number).to.eql(3);
             expect(partnerJourney.order).to.eql('NOPARTNERCODE,1301-218901,2398');
-            expect(partnerJourney.first).to.eql('NOPARTNERCODE');
+            expect(partnerJourney.first).to.eql('1301-218901');
             expect(partnerJourney.last).to.eql('2398');
             expect(partnerJourney.urls).to.eql('/en/Hotels.aspx,/en/p1301/Hotels.aspx,/en/p2398/Hotels.aspx');
         });
