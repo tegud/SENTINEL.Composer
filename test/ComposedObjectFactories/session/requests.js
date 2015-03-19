@@ -32,6 +32,22 @@ describe('buildRequests', function() {
 		}).inMoonstickBeta).to.be(true);
 	});
 
+	it('sets auVisitor to true when au host is present on a request', function() {
+		expect(buildRequests({ 
+			events: [
+				{ type: 'lr_varnish_request', url_page_type: 'search', req_headers: { Host: 'www.laterooms.com.au' } }
+			]
+		}).auVisitor).to.be(true);
+	});
+
+	it('sets auVisitor to false when au host is present on no requests', function() {
+		expect(buildRequests({ 
+			events: [
+				{ type: 'lr_varnish_request', url_page_type: 'search', req_headers: { Host: 'www.laterooms.com' } }
+			]
+		}).auVisitor).to.be(false);
+	});
+
 	describe('sets enteredFunnelAt', function() {
 		it('when there are no funnel requests, it sets the enteredFunnelAt to none', function() {
 			expect(buildRequests({ 
