@@ -40,6 +40,30 @@ describe('buildRequests', function() {
 		}).auVisitor).to.be(true);
 	});
 
+	it('sets asiaRoomsVisitor to false when no header indicates it came from asia rooms', function() {
+		expect(buildRequests({ 
+			events: [
+				{ type: 'lr_varnish_request', url_page_type: 'search' }
+			]
+		}).asiaRoomsVisitor).to.be(false);
+	});
+
+	it('sets asiaRoomsVisitor to true when header indicates it came from asia rooms as a string', function() {
+		expect(buildRequests({ 
+			events: [
+				{ type: 'lr_varnish_request', url_page_type: 'search', resp_headers: { 'x_debug_redirectedFromAsiarooms': 'true' } }
+			]
+		}).asiaRoomsVisitor).to.be(true);
+	});
+
+	it('sets asiaRoomsVisitor to true when header indicates it came from asia rooms as a boolean', function() {
+		expect(buildRequests({ 
+			events: [
+				{ type: 'lr_varnish_request', url_page_type: 'search', resp_headers: { 'x_debug_redirectedFromAsiarooms': true } }
+			]
+		}).asiaRoomsVisitor).to.be(true);
+	});
+
 	it('sets auVisitor to false when au host is present on no requests', function() {
 		expect(buildRequests({ 
 			events: [
