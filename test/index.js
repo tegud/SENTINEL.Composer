@@ -21,8 +21,8 @@ describe('SENTINEL.Composer', function() {
 				aggregators: [
 					{
 						type: 'session',
-						subscribedTypes: ['lr_varnish_request', 'domain_events', 'lr_errors'],
-						keyProperty: 'sessionId',
+						subscribedTypes: ['lr_varnish_request', 'domain_events', 'lr_errors', 'paymentprocessor_logging'],
+						keyFunction: function(data) { return data['sessionId'] || data['data']['TLRGSessionId']; },
 						factory: 'session',
 						memoryStore: {
 							maxInactivityUnits: 'ms',
@@ -32,7 +32,7 @@ describe('SENTINEL.Composer', function() {
 					{
 						type: 'cross_application_request',
 						subscribedTypes: ['lr_varnish_request', 'ms_logging', 'ms_errors', 'hotels_acquisitions_errors', 'hotels_acquisitions_request', 'api_varnish', 'hotel_api_errors'],
-						keyProperty: 'crossApplicationRequestId',
+						keyFunction: function(data) { return data['crossApplicationRequestId']; },
 						factory: 'crossApplicationRequest',
 						memoryStore: {
 							maxInactivityUnits: 'ms',
@@ -178,6 +178,42 @@ describe('SENTINEL.Composer', function() {
 					}
 
 					expect(parsedData.booked).to.be(true);
+					done();
+				});
+			});
+
+			it('sets tokeniser to ipg if session contains no paymentprocessor events', function(done) {
+				var testData = loadTestData('booking.json');
+
+				sendTest(testData, 5);
+
+				udpClient.on("message", function messageReceived(msg) {
+					var data = msg.toString('utf-8');
+					var parsedData = JSON.parse(data);
+
+					if(parsedData.type !== 'session') {
+						return;
+					}
+
+					expect(parsedData.tokeniserJourney.tokeniser).to.be('ipg');
+					done();
+				});
+			});
+
+			it('sets tokeniser to paymentprocessor if session contains paymentprocessor events', function(done) {
+				var testData = loadTestData('booking_with_paymentprocessor.json');
+
+				sendTest(testData, 5);
+
+				udpClient.on("message", function messageReceived(msg) {
+					var data = msg.toString('utf-8');
+					var parsedData = JSON.parse(data);
+
+					if(parsedData.type !== 'session') {
+						return;
+					}
+
+					expect(parsedData.tokeniserJourney.tokeniser).to.be('paymentprocessor');
 					done();
 				});
 			});
