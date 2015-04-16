@@ -22,7 +22,7 @@ describe('SENTINEL.Composer', function() {
 					{
 						type: 'session',
 						subscribedTypes: ['lr_varnish_request', 'domain_events', 'lr_errors', 'paymentprocessor_logging'],
-						keyFunction: function(data) { return data['sessionId'] || data['data']['TLRGSessionId']; },
+						keyFunction: function(data) { return data['sessionId'] || (data['data'] == undefined ? undefined : data['data']['TLRGSessionId']); },
 						factory: 'session',
 						memoryStore: {
 							maxInactivityUnits: 'ms',
@@ -216,6 +216,12 @@ describe('SENTINEL.Composer', function() {
 					expect(parsedData.tokeniserJourney.tokeniser).to.be('paymentprocessor');
 					done();
 				});
+			});
+
+			it('ignores events without a sessionId', function() {
+				var testData = loadTestData('no_sessionid.json');
+
+				sendTest(testData, 5);
 			});
 
 			it('sets bookingDetails if session contains conversion event', function(done) {
