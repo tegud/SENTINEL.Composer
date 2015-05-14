@@ -42,6 +42,7 @@ describe('SENTINEL.Composer', function() {
 				],
 				refreshRate: 10,
 				emitOnPort: 1235,
+				emitToHost: '127.0.0.1',
 				logLevel: 'ERROR'
 			});
 
